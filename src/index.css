@@ -1,0 +1,107 @@
+/* src/index.css */
+
+/* Reset and Core Layout */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  /* Fonts & Typography */
+  --font-family-display: "Mona Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+  --font-family-mono: ui-monospace, SFMono-Regular, SF Mono, Menlo, Consolas, Liberation Mono, monospace;
+  
+  /* tracking / letter spacing */
+  --letter-spacing-tight: -0.02em;
+  --letter-spacing-normal: -0.005em;
+  --letter-spacing-wide: 0.04em;
+
+  /* Primer-Derived Spacing Grid (Strict 4px/8px scale) */
+  --spacing-1: 4px;
+  --spacing-2: 8px;
+  --spacing-3: 12px;
+  --spacing-4: 16px;
+  --spacing-5: 24px;
+  --spacing-6: 32px;
+  --spacing-7: 40px;
+  --spacing-8: 48px;
+  --spacing-9: 64px;
+
+  /* Premium Light-Mode Color Primitives */
+  --color-canvas-default: #ffffff;
+  --color-canvas-subtle: #f8fafc;
+  --color-canvas-muted: #f1f5f9;
+  
+  --color-border-default: rgba(15, 23, 42, 0.08);
+  --color-border-muted: rgba(15, 23, 42, 0.04);
+  --color-border-active: rgba(15, 23, 42, 0.16);
+
+  --color-fg-default: #0f172a;
+  --color-fg-muted: #475569;
+  --color-fg-subtle: #94a3b8;
+  --color-fg-accent: #0055ff;
+  --color-fg-success: #16a34a;
+  --color-fg-attention: #d97706;
+  --color-fg-danger: #dc2626;
+
+  /* Qor8 Brand Colors */
+  --color-brand-blue: #0055ff;
+  --color-brand-purple: #7c3aed;
+  --color-brand-teal: #0d9488;
+  --color-brand-orange: #ea580c;
+  --color-brand-green: #16a34a;
+
+  /* Animation & Bezier Curves */
+  --transition-fluid: cubic-bezier(0.3, 0, 0, 1);
+  --transition-duration-fast: 200ms;
+  --transition-duration-normal: 400ms;
+  --transition-duration-slow: 800ms;
+  
+  /* Shadow Depth */
+  --shadow-depth-1: 0 1px 3px rgba(0, 0, 0, 0.02), 0 1px 2px rgba(0, 0, 0, 0.04);
+  --shadow-depth-2: 0 10px 30px rgba(149, 157, 165, 0.08), 0 1px 3px rgba(0, 0, 0, 0.04);
+  --shadow-depth-3: 0 20px 40px rgba(140, 149, 159, 0.12), 0 1px 5px rgba(0, 0, 0, 0.05);
+}
+
+body {
+  font-family: var(--font-family-display);
+  background-color: var(--color-canvas-default);
+  color: var(--color-fg-default);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  line-height: 1.5;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* Base scrollbar styling with clean Light Mode blending */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-canvas-subtle);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-fg-subtle);
+  border-radius: 5px;
+  border: 2px solid var(--color-canvas-subtle);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-fg-muted);
+}
+
+/* Scroll Entrance Classes for IntersectionObserver */
+.reveal-on-scroll {
+  opacity: 0;
+  transform: translateY(30px) scale(0.98);
+  transition: opacity var(--transition-duration-slow) var(--transition-fluid),
+              transform var(--transition-duration-slow) var(--transition-fluid);
+  will-change: transform, opacity;
+}
+
+.reveal-on-scroll.revealed {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}

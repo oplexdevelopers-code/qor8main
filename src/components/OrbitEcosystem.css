@@ -1,0 +1,227 @@
+/* src/components/OrbitEcosystem.css */
+
+.orbit-container {
+  position: relative;
+  width: 100%;
+  max-width: 440px;
+  aspect-ratio: 1 / 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+  animation: orbit-entry-spin 1.2s var(--transition-fluid) forwards;
+  will-change: transform, opacity;
+}
+
+/* Background Rainbow Wave Gradient (Aurora style) */
+.orbit-aurora {
+  position: absolute;
+  width: 130%;
+  height: 70%;
+  top: 15%;
+  left: -15%;
+  background: linear-gradient(
+    90deg,
+    rgba(124, 58, 237, 0.08) 0%,
+    rgba(0, 85, 255, 0.08) 25%,
+    rgba(13, 148, 136, 0.08) 50%,
+    rgba(234, 88, 12, 0.08) 75%,
+    rgba(124, 58, 237, 0.08) 100%
+  );
+  filter: blur(50px);
+  border-radius: 50%;
+  z-index: 0;
+  animation: aurora-sweep 15s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes aurora-sweep {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Outer Orbit ring dashed SVG path or CSS circle */
+.orbit-ring {
+  position: absolute;
+  width: 80%;
+  height: 80%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border: 1px dashed rgba(15, 23, 42, 0.08);
+  border-radius: 50%;
+  z-index: 1;
+}
+
+/* Central Emblem */
+.orbit-center {
+  position: absolute;
+  width: 38.6%;
+  height: 38.6%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: var(--color-canvas-default);
+  border: 1px solid rgba(15, 23, 42, 0.06);
+  box-shadow: 0 10px 30px rgba(0, 85, 255, 0.06), 0 2px 6px rgba(0, 0, 0, 0.03);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 3;
+}
+
+.orbit-center-glow {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(0, 85, 255, 0.06) 0%, transparent 70%);
+  z-index: -1;
+  animation: pulse-glow 3s ease-in-out infinite;
+}
+
+@keyframes pulse-glow {
+  0%, 100% { transform: scale(1); opacity: 0.5; }
+  50% { transform: scale(1.15); opacity: 1; }
+}
+
+.orbit-center-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  padding: 22%;
+}
+
+.orbit-center-content svg {
+  width: 100%;
+  height: 100%;
+}
+
+/* Orbiting Nodes */
+.orbit-node-wrapper {
+  position: absolute;
+  left: calc(50% + var(--x-offset));
+  top: calc(50% + var(--y-offset));
+  width: 11%;
+  min-width: 32px;
+  max-width: 48px;
+  aspect-ratio: 1 / 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+  transition: left var(--transition-duration-normal) var(--transition-fluid),
+              top var(--transition-duration-normal) var(--transition-fluid),
+              opacity var(--transition-duration-normal) var(--transition-fluid),
+              filter var(--transition-duration-normal) var(--transition-fluid);
+  animation: node-shuffle 0.9s var(--transition-fluid) forwards, float-node 6s ease-in-out infinite;
+  animation-delay: 0s, 0.9s;
+  will-change: left, top, opacity;
+}
+
+/* Stagger floating motions */
+.orbit-node-wrapper:nth-child(odd) {
+  animation-delay: -1.5s;
+}
+.orbit-node-wrapper:nth-child(3n) {
+  animation-delay: -3s;
+}
+
+@keyframes float-node {
+  0%, 100% { transform: translate(-50%, -50%) translateY(0px); }
+  50% { transform: translate(-50%, -50%) translateY(-6px); }
+}
+
+.orbit-node-icon {
+  width: 100%;
+  height: 100%;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  transition: transform var(--transition-duration-fast) var(--transition-fluid);
+  cursor: pointer;
+  will-change: transform;
+}
+
+.orbit-node-icon svg {
+  width: 46%;
+  height: 46%;
+}
+
+.orbit-node-wrapper:hover .orbit-node-icon {
+  transform: scale(1.12);
+}
+
+.orbit-node-label {
+  position: absolute;
+  top: 110%;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: clamp(9px, 2vw, 11px);
+  font-weight: 700;
+  color: var(--color-fg-muted);
+  white-space: nowrap;
+  font-family: var(--font-family-mono);
+}
+
+/* Dynamic highlighting for selected hero tab groups */
+.orbit-node-wrapper {
+  transition: transform var(--transition-duration-normal) var(--transition-fluid),
+              opacity var(--transition-duration-normal) var(--transition-fluid),
+              filter var(--transition-duration-normal) var(--transition-fluid);
+}
+
+.orbit-node-wrapper.dimmed {
+  opacity: 0;
+  filter: grayscale(60%) blur(0.5px);
+  pointer-events: none;
+  animation-play-state: paused;
+}
+
+.orbit-node-wrapper.highlighted {
+  opacity: 1;
+  z-index: 5;
+}
+
+.orbit-node-wrapper.highlighted .orbit-node-icon {
+  transform: scale(1.15);
+  box-shadow: 0 0 25px currentColor;
+}
+
+.orbit-node-wrapper.highlighted .orbit-node-label {
+  color: #060f25;
+  font-weight: 800;
+}
+
+/* Entry Spin and Node Shuffle animations triggered on tab updates */
+@keyframes orbit-entry-spin {
+  0% {
+    transform: scale(0.85) rotate(-35deg);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1) rotate(0deg);
+    opacity: 1;
+  }
+}
+
+@keyframes node-shuffle {
+  0% {
+    transform: translate(-50%, -50%) scale(0.4);
+    opacity: 0;
+  }
+  60% {
+    transform: translate(-50%, -50%) scale(1.15);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+  }
+}
