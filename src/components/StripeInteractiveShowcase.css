@@ -2,8 +2,10 @@
 
 .stripe-showcase-container {
   width: 100%;
-  max-width: 1100px;
+  max-width: 100%;
   margin: 0 auto var(--spacing-6) auto;
+  /* Matches .hero-tabs-container/.product-coverflow so the dashboard's
+     content width lines up with the tabs and card carousel above it. */
   padding: 0 var(--spacing-4);
   animation: fade-in 0.8s var(--transition-fluid) forwards;
 }
@@ -34,8 +36,8 @@
   background-color: #ffffff;
   border-radius: 12px;
   border: 1px solid rgba(15, 23, 42, 0.04);
-  box-shadow: 
-    0 10px 30px -10px rgba(15, 23, 42, 0.04), 
+  box-shadow:
+    0 10px 30px -10px rgba(15, 23, 42, 0.04),
     0 2px 10px -4px rgba(15, 23, 42, 0.02);
   overflow: hidden;
   display: flex;
@@ -68,9 +70,17 @@
   border-radius: 50%;
 }
 
-.browser-dots .dot.red { background-color: #ff5f56; }
-.browser-dots .dot.yellow { background-color: #ffbd2e; }
-.browser-dots .dot.green { background-color: #27c93f; }
+.browser-dots .dot.red {
+  background-color: #ff5f56;
+}
+
+.browser-dots .dot.yellow {
+  background-color: #ffbd2e;
+}
+
+.browser-dots .dot.green {
+  background-color: #27c93f;
+}
 
 .browser-address-bar {
   position: absolute;
@@ -280,7 +290,7 @@
   border: none;
   border-radius: 10px;
   padding: 12px;
-  box-shadow: 
+  box-shadow:
     0 6px 16px -4px rgba(15, 23, 42, 0.08),
     0 4px 8px -4px rgba(15, 23, 42, 0.04);
   z-index: 10;
@@ -297,7 +307,7 @@
 
 .floating-info-card:hover {
   transform: translateY(-2px) scale(1.02);
-  box-shadow: 
+  box-shadow:
     0 12px 20px -8px rgba(15, 23, 42, 0.12),
     0 6px 10px -6px rgba(15, 23, 42, 0.06);
 }
@@ -376,18 +386,39 @@
 }
 
 @keyframes sway-motion-1 {
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-5px); }
+
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+
+  50% {
+    transform: translateY(-5px);
+  }
 }
 
 @keyframes sway-motion-2 {
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-7px); }
+
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+
+  50% {
+    transform: translateY(-7px);
+  }
 }
 
 @keyframes sway-motion-3 {
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-4px); }
+
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+
+  50% {
+    transform: translateY(-4px);
+  }
 }
 
 /* ==========================================================================

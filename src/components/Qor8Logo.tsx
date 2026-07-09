@@ -14,14 +14,14 @@ export const Qor8Logo: React.FC<Qor8LogoProps> = ({
       <svg
         width={size}
         height={size}
-        viewBox="0 0 40 40"
+        viewBox="0 -8 40 42"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
         aria-hidden="true"
         style={{ flexShrink: 0 }}
       >
         {/* Stripe 1 - Purple */}
-        <rect x="6" y="6" width="24" height="4" rx="2" transform="rotate(-28 6 6)" fill="var(--color-brand-purple)" />
+        <rect x="6" y="6" width="26" height="4" rx="2" transform="rotate(-28 6 6)" fill="var(--color-brand-purple)" />
         {/* Stripe 2 - Blue */}
         <rect x="6" y="14" width="26" height="4" rx="2" transform="rotate(-28 6 14)" fill="var(--color-brand-blue)" />
         {/* Stripe 3 - Teal */}

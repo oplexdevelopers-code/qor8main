@@ -15,7 +15,7 @@ export interface HeroCardProps {
   revealDelay?: string;
 }
 
-export const HeroCard: React.FC<HeroCardProps> = ({
+export const HeroCard = React.forwardRef<HTMLDivElement, HeroCardProps>(({
   id,
   title,
   subtitle,
@@ -27,12 +27,13 @@ export const HeroCard: React.FC<HeroCardProps> = ({
   isNew = false,
   isDimmed = false,
   revealDelay = '0ms',
-}) => {
+}, ref) => {
   return (
     <div
+      ref={ref}
       id={`hero-card-${id}`}
       className={`hero-card-container ${isDimmed ? 'dimmed' : ''}`}
-      style={{ 
+      style={{
         animationDelay: revealDelay,
         '--accent-rgb': accentRgb
       } as React.CSSProperties}
@@ -42,7 +43,7 @@ export const HeroCard: React.FC<HeroCardProps> = ({
           New
         </span>
       )}
-      
+
       <div
         className="hero-card-icon-container"
         style={{
@@ -57,7 +58,7 @@ export const HeroCard: React.FC<HeroCardProps> = ({
         <h3 className="hero-card-title" style={{ '--accent-color': titleColor } as React.CSSProperties}>
           {title}
         </h3>
-        
+
         <h4 className="hero-card-subtitle">
           {subtitle}
         </h4>
@@ -72,5 +73,5 @@ export const HeroCard: React.FC<HeroCardProps> = ({
       </div>
     </div>
   );
-};
+});
 export default HeroCard;

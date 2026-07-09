@@ -119,8 +119,8 @@
   cursor: pointer;
   box-shadow: 0 4px 12px rgba(0, 85, 255, 0.15);
   transition: transform var(--transition-duration-fast) var(--transition-fluid),
-              box-shadow var(--transition-duration-fast) var(--transition-fluid),
-              background-color var(--transition-duration-fast);
+    box-shadow var(--transition-duration-fast) var(--transition-fluid),
+    background-color var(--transition-duration-fast);
   white-space: nowrap;
 }
 
@@ -211,8 +211,8 @@
   align-items: center;
   box-shadow: 0 4px 16px rgba(0, 85, 255, 0.2);
   transition: transform var(--transition-duration-fast) var(--transition-fluid),
-              box-shadow var(--transition-duration-fast) var(--transition-fluid),
-              background-color var(--transition-duration-fast);
+    box-shadow var(--transition-duration-fast) var(--transition-fluid),
+    background-color var(--transition-duration-fast);
 }
 
 .primary-cta:hover {
@@ -234,8 +234,8 @@
   align-items: center;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
   transition: transform var(--transition-duration-fast) var(--transition-fluid),
-              border-color var(--transition-duration-fast),
-              background-color var(--transition-duration-fast);
+    border-color var(--transition-duration-fast),
+    background-color var(--transition-duration-fast);
 }
 
 .secondary-cta:hover {
@@ -262,7 +262,7 @@
   align-items: center;
   justify-content: center;
   transition: transform var(--transition-duration-normal) var(--transition-fluid),
-              opacity var(--transition-duration-normal) var(--transition-fluid);
+    opacity var(--transition-duration-normal) var(--transition-fluid);
   will-change: transform, opacity;
 }
 
@@ -317,69 +317,145 @@
   width: 100%;
 }
 
-.product-showcase-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 24px;
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-/* 4. Pillars Section */
+/* 4. Pillars Section — a single floating glass capsule (Apple-style nav
+   bar): frosted, pill-shaped, segments divided by hairlines instead of
+   separate cards on a plain band. */
 .pillars-section {
-  border-top: 1px solid rgba(15, 23, 42, 0.05);
-  background-color: var(--color-canvas-subtle);
+  background-color: var(--color-canvas-default);
   padding: var(--spacing-8) 0;
 }
 
 .pillars-grid {
-  max-width: 1200px;
+  max-width: 1120px;
   margin: 0 auto;
-  padding: 0 var(--spacing-5);
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: var(--spacing-5);
-  width: 100%;
+  padding: 10px clamp(10px, 2.5vw, 28px);
+  display: flex;
+  align-items: stretch;
+  width: calc(100% - var(--spacing-5) * 2);
+  border-radius: 999px;
+  background-image: linear-gradient(135deg,
+    rgba(255, 255, 255, 0.5) 0%,
+    rgba(220, 217, 210, 0.32) 55%,
+    rgba(255, 255, 255, 0.6) 100%);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  box-shadow: 0 10px 22px -14px rgba(15, 23, 42, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.6);
 }
 
 .pillar-card {
+  position: relative;
+  flex: 1 1 0;
+  min-width: 0;
   display: flex;
-  flex-direction: column;
   align-items: center;
-  text-align: center;
+  gap: clamp(6px, 1vw, 10px);
+  padding: 10px clamp(8px, 1.6vw, 16px);
+  border-radius: 999px;
+  text-align: left;
+  cursor: pointer;
+  background: none;
+  border: none;
+  font: inherit;
+  color: inherit;
+  overflow: hidden;
+  transition: background-color var(--transition-duration-fast) var(--transition-fluid),
+              flex-grow 0.4s var(--transition-fluid),
+              padding 0.4s var(--transition-fluid);
+}
+
+.pillar-card:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  top: 22%;
+  bottom: 22%;
+  width: 1px;
+  background: rgba(15, 23, 42, 0.08);
+}
+
+.pillar-card:hover {
+  background-color: rgba(255, 255, 255, 0.55);
+}
+
+/* Clicking a segment expands its description; the rest shrink to icon-only */
+.pillar-card.expanded {
+  flex-grow: 2.4;
+}
+
+.pillar-card.collapsed {
+  flex-grow: 0.55;
+  padding-left: clamp(6px, 1vw, 12px);
+  padding-right: clamp(6px, 1vw, 12px);
+  justify-content: center;
 }
 
 .pillar-icon {
-  width: 44px;
-  height: 44px;
+  width: clamp(28px, 3vw, 36px);
+  height: clamp(28px, 3vw, 36px);
+  flex-shrink: 0;
   border-radius: 50%;
-  background-color: #ffffff;
-  border: 1.5px solid rgba(15, 23, 42, 0.05);
+  background: linear-gradient(150deg, rgba(var(--accent-rgb), 0.95), rgba(var(--accent-rgb), 0.72));
+  border: 1px solid rgba(255, 255, 255, 0.35);
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--color-brand-blue);
-  margin-bottom: var(--spacing-3);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+  color: #ffffff;
+  box-shadow: 0 4px 10px -2px rgba(var(--accent-rgb), 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.35);
   transition: transform var(--transition-duration-normal) var(--transition-fluid);
 }
 
+.pillar-icon svg {
+  width: 46%;
+  height: 46%;
+}
+
 .pillar-card:hover .pillar-icon {
-  transform: translateY(-2px) scale(1.05);
-  color: var(--color-brand-purple);
+  transform: scale(1.08);
+}
+
+.pillar-text {
+  min-width: 0;
+  max-width: 200px;
+  opacity: 1;
+  transition: max-width 0.4s var(--transition-fluid), opacity 0.25s var(--transition-fluid);
+}
+
+.pillar-card.expanded .pillar-text {
+  max-width: 340px;
+}
+
+.pillar-card.collapsed .pillar-text {
+  max-width: 0;
+  opacity: 0;
 }
 
 .pillar-title {
-  font-size: 14px;
+  font-size: clamp(10.5px, 1.1vw, 12.5px);
   font-weight: 800;
   color: #060f25;
-  margin-bottom: 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
+/* Hidden by default — only the clicked/expanded segment reveals its
+   description; the others show icon + title only. */
 .pillar-desc {
-  font-size: 11px;
+  font-size: 10.5px;
   color: var(--color-fg-muted);
-  line-height: 1.4;
+  line-height: 1.35;
+  white-space: nowrap;
+  max-width: 0;
+  opacity: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: max-width 0.4s var(--transition-fluid), opacity 0.25s var(--transition-fluid);
+}
+
+.pillar-card.expanded .pillar-desc {
+  max-width: 320px;
+  opacity: 1;
 }
 
 /* 5. Footer & Trust Banner */
@@ -479,118 +555,6 @@
   transform: translateY(-1px);
 }
 
-/* ==========================================================================
-   Responsive Media Queries (Mobile, Tablet, Desktop overrides)
-   ========================================================================== */
-
-/* 1. Large Screens & Desktop Menu Navigation (displays menu above 992px) */
-@media (max-width: 992px) {
-  .header-nav {
-    display: none; /* Hide standard navigation items on smaller viewports */
-  }
-
-  .hero-section {
-    grid-template-columns: 1fr;
-    gap: var(--spacing-9);
-    text-align: center;
-    padding-top: var(--spacing-6);
-  }
-
-  .hero-left {
-    align-items: center;
-  }
-
-  .hero-paragraph {
-    max-width: 550px;
-    margin-left: auto;
-    margin-right: auto;
-  }
-
-  .hero-ctas {
-    justify-content: center;
-    margin-bottom: var(--spacing-5);
-  }
-
-  .product-showcase-grid {
-    grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
-  }
-
-  .trust-content {
-    grid-template-columns: repeat(2, 1fr);
-    gap: var(--spacing-6);
-  }
-}
-
-/* 2. Tablets & Small Devices (under 768px) */
-@media (max-width: 768px) {
-  .product-showcase-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  .pillars-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: var(--spacing-6);
-  }
-
-  .hero-right,
-  .avatar-webgl-wrapper,
-  .orbit-container {
-    width: 320px;
-    height: 320px;
-  }
-}
-
-/* 3. Small Mobile Devices (under 480px) */
-@media (max-width: 480px) {
-  .header-content {
-    padding: var(--spacing-3) var(--spacing-4);
-  }
-
-  .demo-button {
-    padding: 8px 12px;
-    font-size: 12px;
-  }
-
-  .hero-headline {
-    font-size: 32px;
-  }
-
-  .hero-subtitle {
-    font-size: 16px;
-    line-height: 1.4;
-  }
-
-  .hero-paragraph {
-    font-size: 14px;
-  }
-
-  .product-showcase-grid {
-    grid-template-columns: 1fr;
-    border-radius: 12px;
-  }
-
-  .pillars-grid {
-    grid-template-columns: 1fr;
-    gap: var(--spacing-5);
-  }
-
-  .trust-content {
-    grid-template-columns: 1fr;
-    gap: var(--spacing-5);
-  }
-
-  .footer-bottom {
-    flex-direction: column;
-    text-align: center;
-    gap: var(--spacing-3);
-    padding: var(--spacing-5) var(--spacing-4);
-  }
-
-  .hero-tabs-container {
-    padding: 0 var(--spacing-3);
-  }
-}
 
 /* ==========================================================================
    Interactive Hero Tab Selector & Transition Animations
@@ -604,17 +568,20 @@
   padding: 0 var(--spacing-4);
 }
 
+
+
 .hero-tabs-scroll-wrapper {
   position: relative;
   display: flex;
   align-items: center;
   width: 100%;
-  max-width: 600px;
+  max-width: 100%;
   justify-content: center;
 }
 
 .tab-scroll-btn {
-  display: flex;
+  display: none;
+  /* Hidden on desktop */
   align-items: center;
   justify-content: center;
   width: 32px;
@@ -649,30 +616,25 @@
   margin-left: 8px;
 }
 
-.hero-tabs-container::-webkit-scrollbar {
-  display: none !important;
-}
-
 .hero-tabs {
   display: flex;
   gap: var(--spacing-2);
-  background-color: var(--color-canvas-muted);
+  /* Frosted-glass background matching the hero rail's translucent gradient */
+  background-image: linear-gradient(135deg,
+    rgba(255, 255, 255, 0.4) 0%,
+    rgba(220, 217, 210, 0.32) 55%,
+    rgba(255, 255, 255, 0.5) 100%);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   padding: 4px;
-  border-radius: 24px;
-  border: 1px solid var(--color-border-default);
-  width: fit-content;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  width: 100%;
   max-width: 100%;
-  overflow-x: auto;
-  scrollbar-width: none;
-  -webkit-overflow-scrolling: touch;
-  scroll-snap-type: x mandatory;
-}
-
-.hero-tabs::-webkit-scrollbar {
-  display: none !important;
 }
 
 .hero-tab-button {
+  flex: 1;
   background: none;
   border: none;
   font-family: var(--font-family-display);
@@ -680,13 +642,13 @@
   font-weight: 700;
   color: var(--color-fg-muted);
   padding: 8px 16px;
-  border-radius: 20px;
+  border-radius: 6px;
   cursor: pointer;
   white-space: nowrap;
-  scroll-snap-align: center;
+  text-align: center;
   transition: background-color var(--transition-duration-fast),
-              color var(--transition-duration-fast),
-              box-shadow var(--transition-duration-fast);
+    color var(--transition-duration-fast),
+    box-shadow var(--transition-duration-fast);
 }
 
 .hero-tab-button:hover {
@@ -733,8 +695,330 @@
     opacity: 0;
     transform: translateY(8px);
   }
+
   100% {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+/* ==========================================================================
+   Responsive Media Queries (Mobile, Tablet, Desktop overrides)
+   ========================================================================== */
+
+/* 1. Large Screens & Desktop Menu Navigation (displays menu above 992px) */
+@media (max-width: 992px) {
+  .header-nav {
+    display: none;
+    /* Hide standard navigation items on smaller viewports */
+  }
+
+  .hero-section {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-9);
+    text-align: center;
+    padding-top: var(--spacing-6);
+  }
+
+  .hero-left {
+    align-items: center;
+  }
+
+  .hero-paragraph {
+    max-width: 550px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .hero-ctas {
+    justify-content: center;
+    margin-bottom: var(--spacing-5);
+  }
+
+  .trust-content {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--spacing-6);
+  }
+}
+
+/* 2. Tablets & Small Devices (under 768px) */
+@media (max-width: 768px) {
+  .pillars-grid {
+    flex-direction: column;
+    border-radius: 28px;
+    width: calc(100% - var(--spacing-4) * 2);
+  }
+
+  .pillar-card {
+    /* .pillar-card has overflow:hidden, which per the flexbox spec makes
+       its automatic minimum size 0 instead of content-based — combined
+       with flex-grow:0 below, every row would otherwise get crushed
+       toward zero height in this column layout. */
+    min-height: 48px;
+    align-items: flex-start;
+    padding-top: 12px;
+    padding-bottom: 12px;
+    border-radius: 20px;
+  }
+
+  .pillar-card .pillar-icon {
+    margin-top: 1px;
+  }
+
+  .pillar-card:not(:last-child)::after {
+    right: 16px;
+    left: 16px;
+    top: auto;
+    bottom: 0;
+    width: auto;
+    height: 1px;
+  }
+
+  /* flex-grow ratios are for distributing horizontal space in the row
+     layout above — in this stacked column layout the main axis is
+     vertical, so those same ratios would squash row *heights* instead.
+     Reset them and just let each row take its natural size; only the
+     description's reveal (below) should differ between rows. */
+  .pillar-card.expanded,
+  .pillar-card.collapsed {
+    flex-grow: 0;
+    justify-content: flex-start;
+  }
+
+  /* Titles stay visible on every row here — collapsing to icon-only reads
+     fine in a horizontal bar but is disorienting in a vertical list. */
+  .pillar-card.collapsed .pillar-text {
+    max-width: 200px;
+    opacity: 1;
+  }
+
+  .pillar-card.expanded .pillar-text {
+    max-width: none;
+  }
+
+  /* Reveal via max-height/opacity instead of max-width here — the
+     description wraps onto its own line on mobile, and transitioning
+     max-width while white-space is "normal" made the text reflow and
+     re-wrap mid-animation (the visible "flicker"). Height animates
+     cleanly since the text's line-wrapping never has to change. */
+  .pillar-card .pillar-desc {
+    max-width: none;
+    white-space: normal;
+    overflow: hidden;
+    text-overflow: clip;
+    max-height: 0;
+    transition: max-height 0.35s var(--transition-fluid), opacity 0.25s var(--transition-fluid);
+  }
+
+  .pillar-card.expanded .pillar-desc {
+    max-height: 60px;
+  }
+
+  .pillar-card.expanded {
+    min-height: 76px;
+  }
+
+  .hero-right,
+  .avatar-webgl-wrapper,
+  .orbit-container {
+    width: 320px;
+    height: 320px;
+  }
+
+  .hero-tabs {
+    width: auto;
+    max-width: calc(100% - 80px);
+    overflow-x: auto;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+    scroll-snap-type: x mandatory;
+    justify-content: flex-start;
+  }
+
+  .hero-tab-button {
+    flex: initial;
+    scroll-snap-align: center;
+  }
+
+  .tab-scroll-btn {
+    display: flex;
+  }
+}
+
+/* 3. Small Mobile Devices (under 576px) */
+@media (max-width: 576px) {
+  .header-content {
+    padding: var(--spacing-3) var(--spacing-4);
+  }
+
+  .demo-button {
+    padding: 8px 12px;
+    font-size: 12px;
+  }
+
+  .hero-headline {
+    font-size: 32px;
+  }
+
+  .hero-subtitle {
+    font-size: 16px;
+    line-height: 1.4;
+  }
+
+  .hero-paragraph {
+    font-size: 14px;
+  }
+
+  .hero-ctas {
+    flex-direction: column;
+    width: 100%;
+    align-items: stretch;
+    gap: var(--spacing-3);
+  }
+
+  .primary-cta,
+  .secondary-cta {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .trust-content {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-5);
+  }
+
+  .footer-bottom {
+    flex-direction: column;
+    text-align: center;
+    gap: var(--spacing-3);
+    padding: var(--spacing-5) var(--spacing-4);
+  }
+
+  .hero-tabs-container {
+    padding: 0 var(--spacing-3);
+  }
+}
+
+/* ==========================================================================
+   Apple-Style Frequently Asked Questions (Q&A) Section
+   ========================================================================== */
+
+.qa-section {
+  padding: var(--spacing-9) var(--spacing-5);
+  background-color: var(--color-canvas-default);
+  width: 100%;
+}
+
+.qa-container {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.qa-heading {
+  font-family: var(--font-family-display);
+  font-size: clamp(34px, 5vw, 48px);
+  font-weight: 900;
+  line-height: 1.1;
+  letter-spacing: var(--letter-spacing-tight);
+  color: #060f25;
+  margin-bottom: var(--spacing-7);
+}
+
+.qa-accordion {
+  display: flex;
+  flex-direction: column;
+  border-top: 1px solid var(--color-border-default);
+}
+
+.qa-item {
+  border-bottom: 1px solid var(--color-border-default);
+  padding: 20px 0;
+  cursor: pointer;
+  transition: background-color var(--transition-duration-fast);
+}
+
+.qa-item:hover {
+  background-color: rgba(15, 23, 42, 0.01);
+}
+
+.qa-question-btn {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  border: none;
+  background: none;
+  font-family: var(--font-family-display);
+  font-size: clamp(16px, 2.2vw, 19px);
+  font-weight: 800;
+  color: var(--color-fg-default);
+  cursor: pointer;
+  padding: 0 4px;
+  text-align: left;
+}
+
+.qa-icon-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: var(--color-canvas-muted);
+  color: var(--color-fg-muted);
+  transition: background-color var(--transition-duration-fast), color var(--transition-duration-fast);
+  flex-shrink: 0;
+}
+
+.qa-item:hover .qa-icon-wrapper {
+  background-color: var(--color-border-default);
+  color: var(--color-fg-default);
+}
+
+.qa-chevron {
+  width: 16px;
+  height: 16px;
+  transition: transform 0.3s var(--transition-fluid);
+}
+
+.qa-item.expanded .qa-chevron {
+  transform: rotate(180deg);
+}
+
+.qa-item.expanded .qa-icon-wrapper {
+  background-color: var(--color-brand-blue);
+  color: #ffffff;
+}
+
+.qa-answer-wrapper {
+  overflow: hidden;
+  transition: max-height 0.3s var(--transition-fluid), opacity 0.3s var(--transition-fluid);
+}
+
+.qa-answer-text {
+  font-family: var(--font-family-display);
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--color-fg-muted);
+  max-width: 820px;
+  padding: 12px 4px 4px 4px;
+}
+
+@media (max-width: 576px) {
+  .qa-section {
+    padding: var(--spacing-8) var(--spacing-4);
+  }
+  
+  .qa-heading {
+    font-size: 28px;
+    margin-bottom: var(--spacing-5);
+  }
+  
+  .qa-question-btn {
+    font-size: 15px;
+  }
+  
+  .qa-answer-text {
+    font-size: 13.5px;
   }
 }

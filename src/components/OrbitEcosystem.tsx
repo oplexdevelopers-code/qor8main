@@ -53,11 +53,16 @@ const ICONS = {
   ),
 };
 
+// A single smooth quarter-pipe bend (not an S-curve) — vertical tangent at the
+// bottom-left end, horizontal tangent at the top-right end. Shared by the
+// visible rail stroke (SVG) and the icons' offset-path (CSS) — keep these two
+// in sync (see .orbit-rail-node in OrbitEcosystem.css).
+export const RAIL_PATH_D = 'M 40 430 C 40 160 220 20 420 20';
+
 interface OrbitNode {
   name: string;
-  color: string;
+  accentRgb: string;
   icon: React.ReactNode;
-  angle: number;
 }
 
 interface OrbitEcosystemProps {
@@ -65,19 +70,27 @@ interface OrbitEcosystemProps {
   activeTabId?: string;
 }
 
+// Full traverse duration for one icon's trip along the rail; stagger delays
+// below are spaced evenly across this so icons continuously enter, cross,
+// and exit — like a ticker/headlines strip — rather than all bunching up.
+// Each icon is only actively crossing the rail for the first 40% of this
+// duration (see rail-travel/rail-fade in OrbitEcosystem.css), so the real
+// crossing time is ~40% of it — 18s keeps that a relaxed ~7s glide.
+const TRAVEL_DURATION = 18;
+
 export const OrbitEcosystem: React.FC<OrbitEcosystemProps> = ({
   activeNodes = [],
   activeTabId = 'all',
 }) => {
   const nodes: OrbitNode[] = [
-    { name: 'Qor8 HR', color: 'var(--color-brand-purple)', icon: ICONS.hr, angle: -90 },
-    { name: 'Qor8 Care', color: 'var(--color-brand-green)', icon: ICONS.care, angle: -45 },
-    { name: 'Qor8 Prop', color: 'var(--color-brand-green)', icon: ICONS.prop, angle: 0 },
-    { name: 'Qor8 Mind', color: 'var(--color-brand-purple)', icon: ICONS.mind, angle: 45 },
-    { name: 'Qor8 Verify', color: 'var(--color-brand-teal)', icon: ICONS.verify, angle: 90 },
-    { name: 'Qor8 Fix', color: 'var(--color-brand-orange)', icon: ICONS.fix, angle: 135 },
-    { name: 'Qor8 Time', color: 'var(--color-brand-blue)', icon: ICONS.time, angle: 180 },
-    { name: 'Qor8 Link', color: 'var(--color-brand-blue)', icon: ICONS.link, angle: -135 },
+    { name: 'Qor8 Link', accentRgb: '0, 85, 255', icon: ICONS.link },
+    { name: 'Qor8 Time', accentRgb: '0, 85, 255', icon: ICONS.time },
+    { name: 'Qor8 HR', accentRgb: '124, 58, 237', icon: ICONS.hr },
+    { name: 'Qor8 Fix', accentRgb: '234, 88, 12', icon: ICONS.fix },
+    { name: 'Qor8 Verify', accentRgb: '13, 148, 136', icon: ICONS.verify },
+    { name: 'Qor8 Mind', accentRgb: '124, 58, 237', icon: ICONS.mind },
+    { name: 'Qor8 Prop', accentRgb: '22, 163, 74', icon: ICONS.prop },
+    { name: 'Qor8 Care', accentRgb: '22, 163, 74', icon: ICONS.care },
   ];
 
   return (
@@ -85,57 +98,108 @@ export const OrbitEcosystem: React.FC<OrbitEcosystemProps> = ({
       {/* Aurora Rainbow Wave Background */}
       <div className="orbit-aurora" aria-hidden="true" />
 
-      {/* Outer Orbit Path Ring */}
-      <div className="orbit-ring" aria-hidden="true" />
+      <div className="orbit-rail-stage">
+        {/* The soft, thick curved rail the icons glide along */}
+        <svg className="orbit-rail-svg" viewBox="0 0 440 440" aria-hidden="true">
+          <defs>
+            <linearGradient id="rail-fill" x1="0" y1="1" x2="1" y2="0">
+              <stop offset="0%" stopColor="rgba(255, 255, 255, 0.32)" />
+              <stop offset="55%" stopColor="rgba(220, 217, 210, 0.4)" />
+              <stop offset="100%" stopColor="rgba(255, 255, 255, 0.58)" />
+            </linearGradient>
+            <linearGradient id="rail-sheen" x1="0" y1="1" x2="1" y2="0">
+              <stop offset="0%" stopColor="rgba(255, 255, 255, 0)" />
+              <stop offset="45%" stopColor="rgba(255, 255, 255, 0.95)" />
+              <stop offset="100%" stopColor="rgba(255, 255, 255, 0)" />
+            </linearGradient>
+            {/* Fades the whole rail out at both ends instead of it just
+                stopping at a hard round cap. */}
+            <linearGradient id="rail-fade-grad" gradientUnits="userSpaceOnUse" x1="40" y1="430" x2="420" y2="20">
+              <stop offset="0%" stopColor="white" stopOpacity="0" />
+              <stop offset="14%" stopColor="white" stopOpacity="1" />
+              <stop offset="86%" stopColor="white" stopOpacity="1" />
+              <stop offset="100%" stopColor="white" stopOpacity="0" />
+            </linearGradient>
+            <mask id="rail-fade-mask" maskUnits="userSpaceOnUse" x="0" y="0" width="440" height="440">
+              <rect x="0" y="0" width="440" height="440" fill="url(#rail-fade-grad)" />
+            </mask>
+          </defs>
+          <g mask="url(#rail-fade-mask)">
+            {/* Soft ground shadow */}
+            <path
+              className="orbit-rail-shadow"
+              d={RAIL_PATH_D}
+              fill="none"
+              stroke="rgba(15, 23, 42, 0.16)"
+              strokeWidth="70"
+              strokeLinecap="round"
+            />
+            {/* Frosted glass tube body */}
+            <path d={RAIL_PATH_D} fill="none" stroke="url(#rail-fill)" strokeWidth="62" strokeLinecap="round" />
+            {/* Faint far-edge rim for roundness */}
+            <path
+              className="orbit-rail-rim"
+              d={RAIL_PATH_D}
+              fill="none"
+              stroke="rgba(15, 23, 42, 0.07)"
+              strokeWidth="4"
+              strokeLinecap="round"
+              transform="translate(9, 9)"
+            />
+            {/* Glossy highlight streak */}
+            <path
+              className="orbit-rail-gloss"
+              d={RAIL_PATH_D}
+              fill="none"
+              stroke="url(#rail-sheen)"
+              strokeWidth="14"
+              strokeLinecap="round"
+            />
+          </g>
+        </svg>
 
-      {/* Center Logo Area */}
-      <div className="orbit-center">
-        <div className="orbit-center-glow" aria-hidden="true" />
-        <div className="orbit-center-content">
-          <svg viewBox="0 0 40 40" fill="none" aria-label="Qor8 Core Symbol">
-            <rect x="6" y="6" width="24" height="4" rx="2" transform="rotate(-28 6 6)" fill="var(--color-brand-purple)" />
-            <rect x="6" y="14" width="26" height="4" rx="2" transform="rotate(-28 6 14)" fill="var(--color-brand-blue)" />
-            <rect x="6" y="22" width="26" height="4" rx="2" transform="rotate(-28 6 22)" fill="var(--color-brand-teal)" />
-            <rect x="6" y="30" width="24" height="4" rx="2" transform="rotate(-28 6 30)" fill="var(--color-brand-orange)" />
-          </svg>
-        </div>
-      </div>
-
-      {/* Orbiting Nodes */}
-      {nodes.map((node, index) => {
-        const radius = 40; // 40% of container size
-        const rad = (node.angle * Math.PI) / 180;
-        const x = Math.cos(rad) * radius;
-        const y = Math.sin(rad) * radius;
-
-        const isHighlighted = activeNodes.length > 0 && activeNodes.includes(node.name);
-        const isDimmed = activeNodes.length > 0 && !activeNodes.includes(node.name);
-
-        return (
-          <div
-            key={index}
-            className={`orbit-node-wrapper ${isHighlighted ? 'highlighted' : ''} ${isDimmed ? 'dimmed' : ''}`}
-            style={{
-              '--x-offset': `${x}%`,
-              '--y-offset': `${y}%`,
-            } as React.CSSProperties}
-          >
-            <div
-              className="orbit-node-icon"
-              style={{
-                backgroundColor: node.color,
-                boxShadow: isHighlighted 
-                  ? `0 0 20px ${node.color}, 0 4px 14px ${node.color}4d`
-                  : `0 8px 20px ${node.color}26`,
-              }}
-              title={node.name}
-            >
-              {node.icon}
-            </div>
-            <span className="orbit-node-label">{node.name}</span>
+        {/* Central Emblem */}
+        <div className="orbit-center">
+          <div className="orbit-center-glow" aria-hidden="true" />
+          <div className="orbit-center-content">
+            <svg viewBox="0 -8 40 42" fill="none" aria-label="Qor8 Core Symbol">
+              <rect x="6" y="6" width="26" height="4" rx="2" transform="rotate(-28 6 6)" fill="var(--color-brand-purple)" />
+              <rect x="6" y="14" width="26" height="4" rx="2" transform="rotate(-28 6 14)" fill="var(--color-brand-blue)" />
+              <rect x="6" y="22" width="26" height="4" rx="2" transform="rotate(-28 6 22)" fill="var(--color-brand-teal)" />
+              <rect x="6" y="30" width="24" height="4" rx="2" transform="rotate(-28 6 30)" fill="var(--color-brand-orange)" />
+            </svg>
           </div>
-        );
-      })}
+        </div>
+
+        {/* Nodes travel the full rail like a headlines ticker — continuously
+            entering from the bottom-left end, crossing, and exiting at the
+            top-right, staggered so the strip never looks empty. */}
+        {nodes.map((node, index) => {
+          const isHighlighted = activeNodes.length > 0 && activeNodes.includes(node.name);
+          const isDimmed = activeNodes.length > 0 && !activeNodes.includes(node.name);
+          const delay = -((TRAVEL_DURATION / nodes.length) * index);
+
+          return (
+            <div
+              key={index}
+              className={`orbit-rail-node ${isHighlighted ? 'highlighted' : ''} ${isDimmed ? 'dimmed' : ''}`}
+              style={{
+                '--accent-rgb': node.accentRgb,
+                animationDuration: `${TRAVEL_DURATION}s`,
+                animationDelay: `${delay}s`,
+              } as React.CSSProperties}
+            >
+              <div className="orbit-rail-node-inner" style={{ animationDuration: `${TRAVEL_DURATION}s`, animationDelay: `${delay}s` } as React.CSSProperties}>
+                <span className="orbit-rail-node-contact" aria-hidden="true" />
+                <div className="orbit-rail-node-icon" title={node.name}>
+                  {node.icon}
+                </div>
+                <span className="orbit-rail-node-label">{node.name}</span>
+              </div>
+            </div>
+          );
+        })}
+      </div>
     </div>
   );
 };

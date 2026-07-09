@@ -2,7 +2,8 @@ import React, { useState, useRef } from 'react';
 import { Qor8Logo } from './components/Qor8Logo';
 import { OrbitEcosystem } from './components/OrbitEcosystem';
 import { SpeakingAvatarWebGL } from './components/SpeakingAvatarWebGL';
-import { HeroCard } from './components/HeroCard';
+import { ProductCoverflow } from './components/ProductCoverflow';
+import { ProductStack } from './components/ProductStack';
 import { StripeInteractiveShowcase } from './components/StripeInteractiveShowcase';
 import { useIntersectionObserver } from './hooks/useIntersectionObserver';
 import './App.css';
@@ -194,6 +195,7 @@ const PILLARS = [
     id: 'secure',
     title: 'Secure by Design',
     description: 'Security built into every application.',
+    accentRgb: '0, 85, 255',
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ width: '22px', height: '22px' }}>
         <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
@@ -205,6 +207,7 @@ const PILLARS = [
     id: 'connected',
     title: 'Connected by Nature',
     description: 'Every solution works seamlessly together.',
+    accentRgb: '124, 58, 237',
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ width: '22px', height: '22px' }}>
         <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" />
@@ -216,6 +219,7 @@ const PILLARS = [
     id: 'standalone',
     title: 'Standalone by Design',
     description: 'Every application operates independently.',
+    accentRgb: '13, 148, 136',
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ width: '22px', height: '22px' }}>
         <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
@@ -227,6 +231,7 @@ const PILLARS = [
     id: 'cloud',
     title: 'Cloud Powered',
     description: 'Access anywhere. Always available.',
+    accentRgb: '22, 163, 74',
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ width: '22px', height: '22px' }}>
         <path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z" />
@@ -237,6 +242,7 @@ const PILLARS = [
     id: 'scale',
     title: 'Built to Scale',
     description: 'Designed for organisations of every size.',
+    accentRgb: '234, 88, 12',
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ width: '22px', height: '22px' }}>
         <line x1="18" y1="20" x2="18" y2="10" />
@@ -283,8 +289,9 @@ const SOLUTION_TABS: SolutionTab[] = [
 
 export default function App() {
   const [activeTabId, setActiveTabId] = useState<string>('all');
+  const [activePillarId, setActivePillarId] = useState<string | null>(null);
   const tabsRef = useRef<HTMLDivElement>(null);
-  
+
   const scrollTabs = (direction: 'left' | 'right') => {
     if (tabsRef.current) {
       const scrollAmount = 140;
@@ -301,6 +308,7 @@ export default function App() {
   });
 
   const activeTab = SOLUTION_TABS.find(t => t.id === activeTabId) || SOLUTION_TABS[0];
+  const visibleProducts = ALL_PRODUCTS.filter(card => activeTabId === 'all' || activeTab.activeCardIds.includes(card.id));
 
   return (
     <div className="app-page">
@@ -391,7 +399,7 @@ export default function App() {
           </div>
         </section>
 
-        {/* 3. Product Cards Grid Segment */}
+        {/* 3. Product Cards & Tabs Segment */}
         <section 
           id="products-showcase" 
           ref={elementRef as React.RefObject<HTMLDivElement>}
@@ -436,36 +444,49 @@ export default function App() {
             </div>
           </div>
 
-          {/* Stripe-style Interactive Showcase Dashboard */}
-          <StripeInteractiveShowcase activeTabId={activeTabId} />
-
-          {/* Unified Product Grid Matrix */}
-          <div className="product-showcase-grid">
-            {ALL_PRODUCTS.filter(card => activeTabId === 'all' || activeTab.activeCardIds.includes(card.id)).map((card, i) => (
-              <HeroCard 
-                key={card.id} 
-                {...card} 
-                isDimmed={false}
-                revealDelay={`${i * 50}ms`} 
-              />
-            ))}
-          </div>
+          {/* Unified Product Grid Matrix: desktop 3D coverflow carousel, mobile wallet-card stack */}
+          <ProductCoverflow products={visibleProducts} activeTabId={activeTabId} />
+          <ProductStack products={visibleProducts} />
         </section>
 
-        {/* 4. Key Pillars Banner */}
+        {/* 4. Stripe-style Interactive Showcase Dashboard (spans full width after cards) */}
+        <section id="dashboard-showcase" className="grid-section" style={{ paddingBottom: 'var(--spacing-9)' }}>
+          <StripeInteractiveShowcase activeTabId={activeTabId} />
+        </section>
+
+        {/* 5. Key Pillars Banner — floating glass capsule, Apple-style nav bar.
+             All five show icon + title by default; clicking one expands its
+             description while the rest collapse down to icon-only. */}
         <section className="pillars-section" aria-label="Core Pillars">
           <div className="pillars-grid">
-            {PILLARS.map((pillar) => (
-              <div key={pillar.id} className="pillar-card" id={`pillar-${pillar.id}`}>
-                <div className="pillar-icon">
-                  {pillar.icon}
-                </div>
-                <h3 className="pillar-title">{pillar.title}</h3>
-                <p className="pillar-desc">{pillar.description}</p>
-              </div>
-            ))}
+            {PILLARS.map((pillar) => {
+              const isExpanded = activePillarId === pillar.id;
+              const isCollapsed = activePillarId !== null && !isExpanded;
+              return (
+                <button
+                  key={pillar.id}
+                  type="button"
+                  className={`pillar-card ${isExpanded ? 'expanded' : ''} ${isCollapsed ? 'collapsed' : ''}`}
+                  id={`pillar-${pillar.id}`}
+                  style={{ '--accent-rgb': pillar.accentRgb } as React.CSSProperties}
+                  onClick={() => setActivePillarId(prev => (prev === pillar.id ? null : pillar.id))}
+                  aria-expanded={isExpanded}
+                >
+                  <div className="pillar-icon">
+                    {pillar.icon}
+                  </div>
+                  <div className="pillar-text">
+                    <h3 className="pillar-title">{pillar.title}</h3>
+                    <p className="pillar-desc">{pillar.description}</p>
+                  </div>
+                </button>
+              );
+            })}
           </div>
         </section>
+
+        {/* 6. Apple-style Q&A Accordion Section */}
+        <QASection />
       </main>
 
       {/* 5. Trust Banner / Footer Section */}
@@ -551,3 +572,88 @@ export default function App() {
     </div>
   );
 }
+
+/* ==========================================================================
+   Apple-Style Frequently Asked Questions (Q&A) Component
+   ========================================================================== */
+
+interface QAItem {
+  question: string;
+  answer: string;
+}
+
+const QA_ITEMS: QAItem[] = [
+  {
+    question: "What makes the Qor8 ecosystem different from standard enterprise software?",
+    answer: "Unlike traditional monolithic platforms or fragmented third-party apps, Qor8 is built on a unified 'connected by nature, standalone by design' architecture. This means each application operates fully independently with isolated sandboxed databases and permissions, yet shares global user directories, real-time sync systems, and security compliance checks natively through the Qor8 Link mesh."
+  },
+  {
+    question: "Can we license and run individual Qor8 applications separately?",
+    answer: "Absolutely. Qor8 is completely modular. You can deploy a single application like Qor8 HR or Qor8 Prop first, and then add secure messaging (Link), purchasing pipelines (Buy), or threat auditing (Verify) whenever your team is ready. They will immediately discover each other and integrate dynamically."
+  },
+  {
+    question: "How does Qor8 enforce enterprise-grade security and zero-trust?",
+    answer: "Security is embedded directly into the foundation. Every system process uses secure zero-trust credential routing, short-lived hardware-bound JWT sessions, and localized cryptographic data keys. Real-time compliance scans ensure that all access points, document verify tasks, and database queries are fully audited."
+  },
+  {
+    question: "How do data synchronization and software updates work across the sandbox?",
+    answer: "Applications operate in isolated containers to prevent database locks, cascading down-times, or version mismatches. Inter-app data synchronization is achieved in real-time using secure, event-driven webhooks and message queues, meaning updates to one app never affect the performance of another."
+  },
+  {
+    question: "What kind of onboarding support and data migration services are available?",
+    answer: "Every Qor8 deployment includes developer-led onboarding, custom API schema mapping, and automated database migration pipelines. The system also includes Qor8 Mind, our built-in diagnostics utility that helps guide your team through setup checks, compliance audits, and system configuration directly from the console."
+  }
+];
+
+export function QASection() {
+  const [expandedIndex, setExpandedIndex] = useState<number | null>(null);
+
+  const toggleExpand = (index: number) => {
+    setExpandedIndex(prev => (prev === index ? null : index));
+  };
+
+  return (
+    <section className="qa-section" aria-label="Frequently Asked Questions">
+      <div className="qa-container">
+        <h2 className="qa-heading">Questions. Answers.</h2>
+        <div className="qa-accordion">
+          {QA_ITEMS.map((item, index) => {
+            const isExpanded = expandedIndex === index;
+            return (
+              <div 
+                key={index} 
+                className={`qa-item ${isExpanded ? 'expanded' : ''}`}
+                onClick={() => toggleExpand(index)}
+              >
+                <button 
+                  className="qa-question-btn"
+                  aria-expanded={isExpanded}
+                  aria-controls={`qa-answer-${index}`}
+                >
+                  <span className="qa-question-text">{item.question}</span>
+                  <span className="qa-icon-wrapper">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="qa-chevron">
+                      <polyline points="6 9 12 15 18 9" />
+                    </svg>
+                  </span>
+                </button>
+                <div 
+                  id={`qa-answer-${index}`}
+                  className="qa-answer-wrapper"
+                  style={{
+                    maxHeight: isExpanded ? '200px' : '0px',
+                    opacity: isExpanded ? 1 : 0
+                  }}
+                  aria-hidden={!isExpanded}
+                >
+                  <p className="qa-answer-text">{item.answer}</p>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+  );
+}
+

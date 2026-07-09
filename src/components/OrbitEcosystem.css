@@ -40,35 +40,59 @@
   100% { transform: rotate(360deg); }
 }
 
-/* Outer Orbit ring dashed SVG path or CSS circle */
-.orbit-ring {
+/* Fixed 440x440 reference stage: the rail SVG and the node offset-paths are
+   both authored in this coordinate space, then the whole stage is scaled
+   down together at smaller breakpoints so the icons stay glued to the rail. */
+.orbit-rail-stage {
   position: absolute;
-  width: 80%;
-  height: 80%;
   top: 50%;
   left: 50%;
+  width: 440px;
+  height: 440px;
   transform: translate(-50%, -50%);
-  border: 1px dashed rgba(15, 23, 42, 0.08);
-  border-radius: 50%;
   z-index: 1;
 }
 
-/* Central Emblem */
+.orbit-rail-svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.orbit-rail-shadow {
+  filter: blur(14px);
+  opacity: 0.32;
+}
+
+.orbit-rail-rim {
+  opacity: 0.7;
+}
+
+.orbit-rail-gloss {
+  transform: translate(-9px, -9px);
+  opacity: 0.85;
+  mix-blend-mode: screen;
+}
+
+/* Central Emblem — pulled down and right of the rail's own path so the two
+   read as separate shapes instead of the rail slicing across the circle. */
 .orbit-center {
   position: absolute;
-  width: 38.6%;
-  height: 38.6%;
-  top: 50%;
-  left: 50%;
+  width: 190px;
+  height: 190px;
+  top: 64%;
+  left: 62%;
   transform: translate(-50%, -50%);
   border-radius: 50%;
-  background: var(--color-canvas-default);
-  border: 1px solid rgba(15, 23, 42, 0.06);
-  box-shadow: 0 10px 30px rgba(0, 85, 255, 0.06), 0 2px 6px rgba(0, 0, 0, 0.03);
+  /* Just a faint wash so the aurora gradient behind still reads through,
+     rather than a solid disc with a hard rim. */
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.62) 45%, rgba(255, 255, 255, 0) 100%);
+  filter: drop-shadow(0 4px 10px rgba(0, 85, 255, 0.04));
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 3;
+  z-index: 2;
 }
 
 .orbit-center-glow {
@@ -100,106 +124,153 @@
   height: 100%;
 }
 
-/* Orbiting Nodes */
-.orbit-node-wrapper {
+/* Nodes travel the full rail via CSS motion path, ticker-style: each one
+   enters at the bottom-left end, crosses, and exits at the top-right, then
+   loops. Position (outer) and fade-in/out (inner) are separate animated
+   elements so the .dimmed/.highlighted states below — which use `filter`,
+   not `opacity` — never fight the travel animation for the same property. */
+.orbit-rail-node {
   position: absolute;
-  left: calc(50% + var(--x-offset));
-  top: calc(50% + var(--y-offset));
-  width: 11%;
-  min-width: 32px;
-  max-width: 48px;
-  aspect-ratio: 1 / 1;
+  top: 0;
+  left: 0;
+  /* Keep in sync with RAIL_PATH_D in OrbitEcosystem.tsx */
+  offset-path: path("M 40 430 C 40 160 220 20 420 20");
+  offset-rotate: 0deg;
+  z-index: 3;
+  /* offset-path centers this element's whole box (icon + label) on the path,
+     but the label sits below the icon, so that centering pulls the icon
+     itself above the rail's true centerline. Nudge it back down. */
+  transform: translateY(10px);
+  animation-name: rail-travel;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  transition: filter var(--transition-duration-normal) var(--transition-fluid);
+  will-change: offset-distance;
+}
+
+.orbit-rail-node-inner {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  z-index: 2;
-  transition: left var(--transition-duration-normal) var(--transition-fluid),
-              top var(--transition-duration-normal) var(--transition-fluid),
-              opacity var(--transition-duration-normal) var(--transition-fluid),
-              filter var(--transition-duration-normal) var(--transition-fluid);
-  animation: node-shuffle 0.9s var(--transition-fluid) forwards, float-node 6s ease-in-out infinite;
-  animation-delay: 0s, 0.9s;
-  will-change: left, top, opacity;
+  animation-name: rail-fade;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
 }
 
-/* Stagger floating motions */
-.orbit-node-wrapper:nth-child(odd) {
-  animation-delay: -1.5s;
-}
-.orbit-node-wrapper:nth-child(3n) {
-  animation-delay: -3s;
+/* Path runs bottom-left (0%) to top-right (100%). Each icon only actively
+   falls (100% -> 0%, top to bottom) during the first 40% of its own cycle,
+   then sits parked+hidden for the remaining 60% before its next lap — with
+   8 icons staggered evenly across the loop, that keeps only ~3-4 in flight
+   at any moment, and because each one crosses the *entire* rail during its
+   active window, the ones on screen land at well-spread-out positions
+   instead of clumping in one spot. */
+@keyframes rail-travel {
+  0% { offset-distance: 100%; }
+  40% { offset-distance: 0%; }
+  40.01%, 100% { offset-distance: 100%; }
 }
 
-@keyframes float-node {
-  0%, 100% { transform: translate(-50%, -50%) translateY(0px); }
-  50% { transform: translate(-50%, -50%) translateY(-6px); }
+@keyframes rail-fade {
+  0% { opacity: 0; }
+  3% { opacity: 1; }
+  37% { opacity: 1; }
+  40%, 100% { opacity: 0; }
 }
 
-.orbit-node-icon {
-  width: 100%;
-  height: 100%;
-  border-radius: 12px;
+/* Tight grounding shadow right beneath the icon, where it overlaps the
+   tube — no soft ambient halo, which is what made icons read as floating
+   rather than resting on the rail. */
+.orbit-rail-node-contact {
+  position: absolute;
+  top: calc(50% + 18px);
+  left: 50%;
+  width: 26px;
+  height: 8px;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: rgba(15, 23, 42, 0.28);
+  filter: blur(4px);
+  z-index: -1;
+  pointer-events: none;
+}
+
+.orbit-rail-node-icon {
+  width: 50px;
+  height: 50px;
+  border-radius: 14px;
   display: flex;
   align-items: center;
   justify-content: center;
   color: #ffffff;
-  transition: transform var(--transition-duration-fast) var(--transition-fluid);
+  background: linear-gradient(150deg, rgba(var(--accent-rgb), 0.96), rgba(var(--accent-rgb), 0.72));
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  box-shadow: 0 4px 10px -2px rgba(var(--accent-rgb), 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.35);
+  transition: transform var(--transition-duration-fast) var(--transition-fluid),
+              box-shadow var(--transition-duration-fast) var(--transition-fluid);
   cursor: pointer;
   will-change: transform;
 }
 
-.orbit-node-icon svg {
+.orbit-rail-node-icon svg {
   width: 46%;
   height: 46%;
 }
 
-.orbit-node-wrapper:hover .orbit-node-icon {
+.orbit-rail-node:hover .orbit-rail-node-icon {
   transform: scale(1.12);
 }
 
-.orbit-node-label {
-  position: absolute;
-  top: 110%;
-  left: 50%;
-  transform: translateX(-50%);
-  font-size: clamp(9px, 2vw, 11px);
+.orbit-rail-node-label {
+  margin-top: 8px;
+  font-size: 10px;
   font-weight: 700;
   color: var(--color-fg-muted);
   white-space: nowrap;
   font-family: var(--font-family-mono);
-}
-
-/* Dynamic highlighting for selected hero tab groups */
-.orbit-node-wrapper {
-  transition: transform var(--transition-duration-normal) var(--transition-fluid),
-              opacity var(--transition-duration-normal) var(--transition-fluid),
-              filter var(--transition-duration-normal) var(--transition-fluid);
-}
-
-.orbit-node-wrapper.dimmed {
   opacity: 0;
-  filter: grayscale(60%) blur(0.5px);
+  transition: opacity var(--transition-duration-fast);
+}
+
+.orbit-rail-node:hover .orbit-rail-node-label {
+  opacity: 1;
+}
+
+/* Dynamic highlighting for selected hero tab groups. `filter: opacity()` is
+   used instead of the `opacity` property so this doesn't fight the travel
+   animation above, which animates `opacity` on the inner element. */
+.orbit-rail-node.dimmed {
+  filter: grayscale(70%) opacity(12%);
   pointer-events: none;
   animation-play-state: paused;
 }
 
-.orbit-node-wrapper.highlighted {
+.orbit-rail-node.dimmed .orbit-rail-node-inner {
+  animation: none;
   opacity: 1;
+}
+
+.orbit-rail-node.highlighted {
   z-index: 5;
+  animation-play-state: paused;
 }
 
-.orbit-node-wrapper.highlighted .orbit-node-icon {
-  transform: scale(1.15);
-  box-shadow: 0 0 25px currentColor;
+.orbit-rail-node.highlighted .orbit-rail-node-inner {
+  animation: none;
+  opacity: 1;
 }
 
-.orbit-node-wrapper.highlighted .orbit-node-label {
+.orbit-rail-node.highlighted .orbit-rail-node-icon {
+  transform: scale(1.18);
+  box-shadow: 0 0 25px rgba(var(--accent-rgb), 0.55), 0 14px 28px -8px rgba(var(--accent-rgb), 0.5);
+}
+
+.orbit-rail-node.highlighted .orbit-rail-node-label {
+  opacity: 1;
   color: #060f25;
   font-weight: 800;
 }
 
-/* Entry Spin and Node Shuffle animations triggered on tab updates */
+/* Entry Spin animation triggered on tab updates */
 @keyframes orbit-entry-spin {
   0% {
     transform: scale(0.85) rotate(-35deg);
@@ -211,17 +282,11 @@
   }
 }
 
-@keyframes node-shuffle {
-  0% {
-    transform: translate(-50%, -50%) scale(0.4);
-    opacity: 0;
-  }
-  60% {
-    transform: translate(-50%, -50%) scale(1.15);
-    opacity: 1;
-  }
-  100% {
-    transform: translate(-50%, -50%) scale(1);
-    opacity: 1;
+/* Shrink the 440px reference stage to match the smaller orbit-container at
+   tablet/mobile widths (see App.css), keeping the rail and the icons riding
+   on it perfectly aligned since they scale together as one unit. */
+@media (max-width: 768px) {
+  .orbit-rail-stage {
+    transform: translate(-50%, -50%) scale(0.727);
   }
 }
