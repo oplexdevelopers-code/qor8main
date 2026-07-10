@@ -342,7 +342,6 @@ export default function App() {
                 <circle cx="12" cy="7" r="4" />
               </svg>
             </a>
-            <button className="demo-button" id="header-demo-button">Request a demo</button>
           </div>
         </div>
       </header>
