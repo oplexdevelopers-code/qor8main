@@ -80,6 +80,19 @@
   gap: var(--spacing-4);
 }
 
+.help-button {
+  color: var(--color-fg-muted);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: color var(--transition-duration-fast);
+}
+
+.help-button:hover {
+  color: var(--color-fg-default);
+}
+
 .search-button {
   background: none;
   border: none;
