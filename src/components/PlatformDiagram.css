@@ -1,0 +1,308 @@
+/* src/components/PlatformDiagram.css */
+
+.platform-diagram-container {
+  width: 100%;
+  max-width: 100%;
+  margin: 0 auto var(--spacing-4) auto;
+  /* Matches .hero-tabs-container/.product-coverflow — no extra inset beyond
+     .grid-section's own padding, so the card lines up with the tabs and
+     card carousel above it at the same 1200px content width. */
+  padding: 0;
+  animation: fade-in 0.8s var(--transition-fluid) forwards;
+}
+
+.platform-diagram-card {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  border-radius: 24px;
+  /* Same frosted-glass treatment as .hero-tabs, so this card reads as part
+     of the same "liquid glass" system instead of a one-off dark panel. */
+  background-image: linear-gradient(135deg,
+    rgba(255, 255, 255, 0.5) 0%,
+    rgba(220, 217, 210, 0.32) 55%,
+    rgba(255, 255, 255, 0.6) 100%);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  padding: clamp(28px, 4vw, 56px) clamp(20px, 4vw, 56px) clamp(36px, 5vw, 64px);
+  box-shadow: 0 10px 22px -14px rgba(15, 23, 42, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.6);
+  /* Soften the card's bottom edge into the section below instead of a hard
+     cutoff — long enough to feel like a gradual dissolve, but still short
+     of the node/connector content (the "tentacles") above it. */
+  mask-image: linear-gradient(to bottom, #000 0%, #000 calc(100% - 80px), transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 calc(100% - 80px), transparent 100%);
+}
+
+.platform-diagram-dot-grid {
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(rgba(15, 23, 42, 0.1) 1px, transparent 1.5px);
+  background-size: 24px 24px;
+  mask-image: radial-gradient(ellipse 80% 70% at 55% 55%, #000 40%, transparent 100%);
+  pointer-events: none;
+}
+
+.platform-diagram-heading {
+  position: relative;
+  z-index: 1;
+  max-width: 720px;
+  margin: 0;
+  font-size: clamp(17px, 2vw, 22px);
+  line-height: 1.5;
+}
+
+.platform-diagram-heading-strong {
+  color: var(--color-fg-default);
+  font-weight: 600;
+}
+
+.platform-diagram-heading-muted {
+  color: var(--color-fg-muted);
+  font-weight: 400;
+}
+
+/* ==========================================================================
+   Desktop node diagram
+   ========================================================================== */
+
+.platform-diagram-stage {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  aspect-ratio: 1000 / 460;
+  margin-top: clamp(28px, 4vw, 48px);
+}
+
+.platform-diagram-lines {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.platform-diagram-lines path {
+  fill: none;
+  stroke: rgba(15, 23, 42, 0.28);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-dasharray: 0.5 7;
+}
+
+.diagram-node {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  border-radius: 10px;
+  font-family: var(--font-family-display);
+  font-size: clamp(9px, 0.95vw, 12px);
+  font-weight: 700;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  padding: 0 8px;
+}
+
+/* Top-row feature modules — icon chip + caption underneath, sitting on
+   the diagram the same way OrbitEcosystem's rail icons sit on the rail
+   (see .orbit-rail-node-icon), with no drop shadow. */
+.diagram-module {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 6px;
+  perspective: 600px;
+}
+
+.diagram-module-icon {
+  flex-shrink: 0;
+  width: clamp(36px, 4.4vw, 52px);
+  height: clamp(36px, 4.4vw, 52px);
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  background: linear-gradient(150deg, rgba(var(--accent-rgb), 0.95), rgba(var(--accent-rgb), 0.68));
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  /* Icons flip in batches (see --flip-delay, set per-item in the TSX)
+     instead of all five at once — a calm, slow cycle rather than a busy
+     spin, rolling through in groups like a Stripe-style stagger. */
+  transform-style: preserve-3d;
+  animation: diagram-icon-flip 7s ease-in-out infinite;
+  animation-delay: var(--flip-delay, 0s);
+}
+
+@keyframes diagram-icon-flip {
+  0%, 85% {
+    transform: rotateY(0deg);
+  }
+  92.5% {
+    transform: rotateY(180deg);
+  }
+  100% {
+    transform: rotateY(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .diagram-module-icon {
+    animation: none;
+  }
+}
+
+.diagram-module-icon svg {
+  width: 46%;
+  height: 46%;
+}
+
+.diagram-module-label {
+  font-family: var(--font-family-display);
+  font-size: clamp(9px, 0.85vw, 11px);
+  font-weight: 700;
+  color: var(--color-fg-default);
+  white-space: nowrap;
+}
+
+.diagram-node-mid {
+  color: var(--color-fg-default);
+  background: rgba(255, 255, 255, 0.55);
+  border: 1px solid rgba(15, 23, 42, 0.1);
+  backdrop-filter: blur(10px);
+}
+
+.diagram-node-mid .diagram-node-icon svg {
+  width: clamp(12px, 1.1vw, 15px);
+  height: clamp(12px, 1.1vw, 15px);
+  color: var(--color-fg-muted);
+}
+
+.diagram-node-link {
+  justify-content: space-between;
+}
+
+.diagram-node-link-icon svg {
+  width: clamp(11px, 1vw, 13px);
+  height: clamp(11px, 1vw, 13px);
+  color: var(--color-fg-subtle);
+}
+
+.diagram-icon-cluster {
+  position: absolute;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  gap: clamp(6px, 0.8vw, 10px);
+  padding: clamp(8px, 1vw, 14px);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.3);
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  box-sizing: border-box;
+}
+
+.diagram-cluster-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 7px;
+  background: linear-gradient(150deg, rgba(var(--accent-rgb), 0.9), rgba(var(--accent-rgb), 0.6));
+  color: #ffffff;
+}
+
+.diagram-cluster-icon svg {
+  width: 42%;
+  height: 42%;
+}
+
+.diagram-icon-single {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  background: linear-gradient(150deg, rgba(var(--accent-rgb), 0.9), rgba(var(--accent-rgb), 0.6));
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+}
+
+.diagram-icon-single svg {
+  width: 40%;
+  height: 40%;
+}
+
+.diagram-hub {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 26%;
+  background: linear-gradient(155deg, #2a1f6e 0%, #1c1450 55%, #120c38 100%);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  z-index: 2;
+}
+
+.diagram-hub svg {
+  width: 42%;
+  height: 42%;
+  /* CoreMark's viewBox ("0 -8 40 42") is bottom-flush rather than centered
+     — its stripes sit visibly low without this nudge. */
+  transform: translateY(-16.7%);
+}
+
+.platform-diagram-stage-mobile {
+  display: none;
+}
+
+/* ==========================================================================
+   Mobile node diagram + tighter outer margins
+   ========================================================================== */
+
+@media (max-width: 768px) {
+  .platform-diagram-container {
+    padding: 0 var(--spacing-1);
+  }
+
+  .platform-diagram-card {
+    padding: 20px 14px 28px;
+    border-radius: 18px;
+    mask-image: linear-gradient(to bottom, #000 0%, #000 calc(100% - 32px), transparent 100%);
+    -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 calc(100% - 32px), transparent 100%);
+  }
+
+  .platform-diagram-stage {
+    display: none;
+  }
+
+  .platform-diagram-stage-mobile {
+    position: relative;
+    z-index: 1;
+    display: block;
+    width: 100%;
+    aspect-ratio: 380 / 620;
+    margin-top: var(--spacing-6);
+  }
+
+  .platform-diagram-stage-mobile .diagram-node {
+    font-size: 10px;
+    padding: 0 6px;
+  }
+
+  .platform-diagram-stage-mobile .diagram-module-icon {
+    width: 34px;
+    height: 34px;
+    border-radius: 11px;
+  }
+
+  .platform-diagram-stage-mobile .diagram-module-label {
+    font-size: 9px;
+  }
+
+  .platform-diagram-stage-mobile .diagram-node-mid .diagram-node-icon svg {
+    width: 12px;
+    height: 12px;
+  }
+}

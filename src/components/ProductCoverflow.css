@@ -2,13 +2,14 @@
    Desktop/tablet 3D coverflow carousel for product cards. Hidden on mobile
    in favor of ProductStack (the sticky wallet-card stack). */
 
-/* Matches .hero-tabs-container's own padding so the track below lines up
-   exactly with the tabs bar's content width — the nav buttons sit outside
-   that width (absolutely positioned) instead of shrinking it. */
+/* Matches .hero-tabs-container — no extra inset beyond .grid-section's own
+   padding, so the track lines up with the tabs bar and the 1200px content
+   width used site-wide. Nav buttons sit outside this width (absolutely
+   positioned) instead of shrinking it. */
 .product-coverflow {
   position: relative;
   width: 100%;
-  padding: 0 var(--spacing-4);
+  padding: 0;
   margin-top: var(--spacing-6);
   margin-bottom: var(--spacing-6);
 }

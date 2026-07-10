@@ -1,0 +1,191 @@
+/* src/components/ShowcaseVideoSection.css */
+
+.showcase-video-section {
+  /* .main-content is a column flexbox — needs an explicit width to stretch
+     to the container instead of shrinking to content (see .grid-section,
+     .checklist-section). Matches the site-wide 1200px content width. */
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: var(--spacing-9) var(--spacing-5);
+  display: grid;
+  grid-template-columns: 1fr 1.1fr;
+  gap: var(--spacing-7);
+  align-items: center;
+}
+
+.showcase-video-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.showcase-video-heading {
+  font-family: var(--font-family-display);
+  font-size: clamp(30px, 3.6vw, 48px);
+  font-weight: 900;
+  line-height: 1.08;
+  letter-spacing: var(--letter-spacing-tight);
+  color: #060f25;
+  margin: 0;
+}
+
+.showcase-video-heading-accent {
+  color: var(--color-brand-blue);
+}
+
+.showcase-video-subtext {
+  /* Preserves the \n line breaks embedded in the typed segments. */
+  white-space: pre-line;
+  font-family: var(--font-family-display);
+  font-size: clamp(15px, 1.4vw, 17px);
+  line-height: 1.6;
+  color: var(--color-fg-muted);
+  margin: var(--spacing-5) 0 0;
+  max-width: 460px;
+}
+
+.showcase-video-subtext-accent {
+  color: var(--color-brand-blue);
+  font-weight: 700;
+}
+
+/* Blinking cursor after whichever span is currently being typed — works
+   for both the heading and the subtext since it keys off currentColor. */
+.typing::after {
+  content: '';
+  display: inline-block;
+  width: 2px;
+  height: 0.85em;
+  margin-left: 2px;
+  background: currentColor;
+  vertical-align: -0.1em;
+  animation: showcase-cursor-blink 0.8s step-end infinite;
+}
+
+@keyframes showcase-cursor-blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .typing::after {
+    animation: none;
+  }
+}
+
+/* Outer "rail" — same frosted-glass gradient as the OrbitEcosystem rail /
+   hero tabs. Fades on its left edge (the side facing the heading) so it
+   dissolves into the text column instead of a hard boundary between the
+   two, like the rail-fade/tabs-fade masks used elsewhere on the site. */
+.showcase-video-frame {
+  position: relative;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding: clamp(28px, 5vw, 64px);
+  border-radius: 24px;
+  background-image: linear-gradient(135deg,
+    rgba(255, 255, 255, 0.4) 0%,
+    rgba(220, 217, 210, 0.32) 55%,
+    rgba(255, 255, 255, 0.5) 100%);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  box-shadow: 0 10px 22px -14px rgba(15, 23, 42, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.6);
+  /* Fades the left edge (into the text) and the bottom edge (into
+     whatever follows this section) — intersecting the two masks instead
+     of just one keeps the top/right edges crisp while softening both of
+     the others, so there's no hard cutoff at the bottom either. */
+  mask-image:
+    linear-gradient(to right, transparent 0%, rgba(0, 0, 0, 0.65) 40%, #000 68%),
+    linear-gradient(to bottom, #000 0%, #000 80%, transparent 100%);
+  mask-composite: intersect;
+  -webkit-mask-image:
+    linear-gradient(to right, transparent 0%, rgba(0, 0, 0, 0.65) 40%, #000 68%),
+    linear-gradient(to bottom, #000 0%, #000 80%, transparent 100%);
+  -webkit-mask-composite: source-in;
+  /* 3D context for the tilted video card below. */
+  perspective: 1200px;
+}
+
+.showcase-video-inner {
+  position: relative;
+  width: 100%;
+  /* Matches 001.mp4's native 720x540 (4:3) so it fills the frame with no
+     letterboxing or cropping. */
+  aspect-ratio: 4 / 3;
+  max-width: 460px;
+  border-radius: 18px;
+  overflow: hidden;
+  background: transparent;
+  /* Slight 3D tilt for depth, plus inset shadows on all sides instead of
+     an outer drop shadow — reads as carved/engraved into the rail rather
+     than floating on top of it. */
+  transform: rotateY(-7deg) rotateX(2deg);
+  box-shadow:
+    inset 0 6px 16px rgba(0, 0, 0, 0.5),
+    inset 0 -3px 8px rgba(255, 255, 255, 0.08),
+    inset 4px 0 10px rgba(0, 0, 0, 0.25),
+    inset -4px 0 10px rgba(0, 0, 0, 0.25);
+}
+
+.showcase-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+@media (max-width: 992px) {
+  /* Stacked layout: text above video, both sharing one glass card instead
+     of plain text over a separately-framed video. The glass moves to the
+     section itself; .showcase-video-frame becomes a plain inner wrapper. */
+  .showcase-video-section {
+    grid-template-columns: 1fr;
+    text-align: center;
+    justify-items: center;
+    gap: var(--spacing-6);
+    border-radius: 24px;
+    background-image: linear-gradient(135deg,
+      rgba(255, 255, 255, 0.4) 0%,
+      rgba(220, 217, 210, 0.32) 55%,
+      rgba(255, 255, 255, 0.5) 100%);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    box-shadow: 0 10px 22px -14px rgba(15, 23, 42, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.6);
+  }
+
+  .showcase-video-text {
+    align-items: center;
+  }
+
+  .showcase-video-subtext {
+    align-self: flex-start;
+    text-align: left;
+  }
+
+  .showcase-video-frame {
+    /* No longer its own glass panel — the section provides that now. */
+    padding: 0;
+    border-radius: 0;
+    background: none;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    border: none;
+    box-shadow: none;
+    /* Same blend as desktop, rotated for the stacked layout — fades the
+       video's top edge into the heading above it instead of its left edge. */
+    mask-image: linear-gradient(to bottom, transparent 0%, rgba(0, 0, 0, 0.65) 40%, #000 68%);
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0%, rgba(0, 0, 0, 0.65) 40%, #000 68%);
+  }
+}
+
+@media (max-width: 768px) {
+  .showcase-video-section {
+    padding: var(--spacing-7) var(--spacing-4);
+    border-radius: 18px;
+  }
+}

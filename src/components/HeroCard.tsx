@@ -68,7 +68,7 @@ export const HeroCard = React.forwardRef<HTMLDivElement, HeroCardProps>(({
         </p>
 
         <div className="hero-card-arrow" aria-hidden="true">
-          Learn more <span className="arrow-sym">&rarr;</span>
+          See it in action <span className="arrow-sym">&rarr;</span>
         </div>
       </div>
     </div>

@@ -4,7 +4,10 @@ import { OrbitEcosystem } from './components/OrbitEcosystem';
 import { SpeakingAvatarWebGL } from './components/SpeakingAvatarWebGL';
 import { ProductCoverflow } from './components/ProductCoverflow';
 import { ProductStack } from './components/ProductStack';
-import { StripeInteractiveShowcase } from './components/StripeInteractiveShowcase';
+import { PlatformDiagram } from './components/PlatformDiagram';
+import { ChecklistSection } from './components/ChecklistSection';
+import { ShowcaseVideoSection } from './components/ShowcaseVideoSection';
+import { SupportLoremSection } from './components/SupportLoremSection';
 import { useIntersectionObserver } from './hooks/useIntersectionObserver';
 import './App.css';
 
@@ -78,10 +81,10 @@ const PRODUCT_ICONS = {
 
 const ALL_PRODUCTS = [
   {
-    id: 'link1',
+    id: 'link',
     title: 'Qor8 Link',
     subtitle: 'Secure Communications',
-    description: 'Private messaging, announcements, collaboration, tasks and secure file sharing for your teams.',
+    description: 'Bring every conversation together.',
     icon: PRODUCT_ICONS.chatShield,
     iconBgColor: 'var(--color-brand-blue)',
     titleColor: 'var(--color-brand-blue)',
@@ -89,9 +92,9 @@ const ALL_PRODUCTS = [
   },
   {
     id: 'core',
-    title: 'Qor8 Core',
+    title: 'Qor8e',
     subtitle: 'Business & Personal Management',
-    description: 'Documents, tasks, workflows, approvals, records and reminders — all in one place.',
+    description: 'Everything organised. Nothing overlooked.',
     icon: PRODUCT_ICONS.docShield,
     iconBgColor: 'var(--color-brand-blue)',
     titleColor: 'var(--color-brand-blue)',
@@ -102,7 +105,7 @@ const ALL_PRODUCTS = [
     id: 'hr',
     title: 'Qor8 HR',
     subtitle: 'Workforce Operations',
-    description: 'Manage employees, onboarding, compliance, training, leave and performance.',
+    description: 'Build a stronger workforce.',
     icon: PRODUCT_ICONS.people,
     iconBgColor: 'var(--color-brand-purple)',
     titleColor: 'var(--color-brand-purple)',
@@ -112,27 +115,17 @@ const ALL_PRODUCTS = [
     id: 'time',
     title: 'Qor8 Time',
     subtitle: 'Time & Attendance',
-    description: 'Clock in/out, rotas, GPS verification, shifts, timesheets, overtime and scheduling.',
+    description: 'Every shift accounted for.',
     icon: PRODUCT_ICONS.clockPin,
     iconBgColor: 'var(--color-brand-blue)',
     titleColor: 'var(--color-brand-blue)',
     accentRgb: '0, 85, 255',
   },
   {
-    id: 'link2',
-    title: 'Qor8 Link',
-    subtitle: 'Secure Communications',
-    description: 'Private messaging, announcements, collaboration, tasks and secure file sharing for your teams.',
-    icon: PRODUCT_ICONS.chatShield,
-    iconBgColor: 'var(--color-brand-purple)',
-    titleColor: 'var(--color-brand-purple)',
-    accentRgb: '140, 80, 255',
-  },
-  {
     id: 'prop',
     title: 'Qor8 Prop',
     subtitle: 'Property & Asset Management',
-    description: 'Manage properties, tenancies, inspections, maintenance and asset performance.',
+    description: 'Manage every property with confidence.',
     icon: PRODUCT_ICONS.building,
     iconBgColor: 'var(--color-brand-green)',
     titleColor: 'var(--color-brand-green)',
@@ -142,7 +135,7 @@ const ALL_PRODUCTS = [
     id: 'fix',
     title: 'Qor8 Fix',
     subtitle: 'Issue & Maintenance Management',
-    description: 'Report, assign, track and resolve issues with contractors, budgets and compliance.',
+    description: 'Resolve issues before they become problems.',
     icon: PRODUCT_ICONS.gearShield,
     iconBgColor: 'var(--color-brand-orange)',
     titleColor: 'var(--color-brand-orange)',
@@ -152,7 +145,7 @@ const ALL_PRODUCTS = [
     id: 'verify',
     title: 'Qor8 Verify',
     subtitle: 'Identity Verification',
-    description: 'Verify identity, documents, proof of address and compliance credentials.',
+    description: 'Trust every identity.',
     icon: PRODUCT_ICONS.shieldCheck,
     iconBgColor: 'var(--color-brand-teal)',
     titleColor: 'var(--color-brand-teal)',
@@ -162,7 +155,7 @@ const ALL_PRODUCTS = [
     id: 'mind',
     title: 'Qor8 Mind',
     subtitle: 'Mental Wellbeing',
-    description: 'AI-powered wellbeing support, stress management, resilience tools and guidance.',
+    description: 'Helping people perform at their best.',
     icon: PRODUCT_ICONS.brain,
     iconBgColor: 'var(--color-brand-purple)',
     titleColor: 'var(--color-brand-purple)',
@@ -172,7 +165,7 @@ const ALL_PRODUCTS = [
     id: 'care',
     title: 'Qor8 Care',
     subtitle: 'Care & Support',
-    description: 'Compassionate care and support services for people and communities.',
+    description: 'Care delivered with confidence.',
     icon: PRODUCT_ICONS.handsHeart,
     iconBgColor: 'var(--color-brand-green)',
     titleColor: 'var(--color-brand-green)',
@@ -182,7 +175,7 @@ const ALL_PRODUCTS = [
     id: 'buy',
     title: 'Qor8 Buy',
     subtitle: 'Procurement & Purchasing',
-    description: 'Control purchasing, suppliers, approvals, orders, invoices and spend management.',
+    description: 'Smarter purchasing starts here.',
     icon: PRODUCT_ICONS.shoppingCart,
     iconBgColor: 'var(--color-brand-orange)',
     titleColor: 'var(--color-brand-orange)',
@@ -265,13 +258,13 @@ const SOLUTION_TABS: SolutionTab[] = [
     id: 'all',
     label: 'All Solutions',
     activeNodes: [],
-    activeCardIds: ['link1', 'core', 'hr', 'time', 'link2', 'prop', 'fix', 'verify', 'mind', 'care', 'buy'],
+    activeCardIds: ['link', 'core', 'hr', 'time', 'prop', 'fix', 'verify', 'mind', 'care', 'buy'],
   },
   {
     id: 'comms',
     label: 'Communications',
     activeNodes: ['Qor8 Link', 'Qor8 Time'],
-    activeCardIds: ['link1', 'link2', 'time'],
+    activeCardIds: ['link', 'time'],
   },
   {
     id: 'operations',
@@ -449,10 +442,30 @@ export default function App() {
           <ProductStack products={visibleProducts} />
         </section>
 
-        {/* 4. Stripe-style Interactive Showcase Dashboard (spans full width after cards) */}
-        <section id="dashboard-showcase" className="grid-section" style={{ paddingBottom: 'var(--spacing-9)' }}>
-          <StripeInteractiveShowcase activeTabId={activeTabId} />
-        </section>
+        {/* 4. Platform completeness diagram, blended into the checklist
+             below via a shared backdrop instead of two separate blocks. */}
+        <div className="diagram-checklist-blend">
+          <section id="dashboard-showcase" className="grid-section" style={{ paddingBottom: 0 }}>
+            <PlatformDiagram />
+          </section>
+
+          {/* Everything-included checklist — spinners tick off one by one as
+              the section scrolls into view. */}
+          <ChecklistSection />
+        </div>
+
+        {/* Apple-style product showcase — bold headline over a full-width
+            autoplaying video, ahead of the Q&A section. */}
+        <ShowcaseVideoSection />
+
+        {/* Support contact strip + large lorem ipsum block, sharing one
+            frosted rail/dot-grid/ambient-purple backdrop so there's no
+            hard cut between the two. */}
+        <SupportLoremSection />
+
+        {/* Apple-style Q&A Accordion Section — moved directly below the
+            checklist, ahead of the pillars banner. */}
+        <QASection />
 
         {/* 5. Key Pillars Banner — floating glass capsule, Apple-style nav bar.
              All five show icon + title by default; clicking one expands its
@@ -484,9 +497,6 @@ export default function App() {
             })}
           </div>
         </section>
-
-        {/* 6. Apple-style Q&A Accordion Section */}
-        <QASection />
       </main>
 
       {/* 5. Trust Banner / Footer Section */}
