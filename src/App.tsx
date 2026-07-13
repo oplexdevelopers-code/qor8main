@@ -1,5 +1,6 @@
 import React from 'react';
 import { Qor8Logo } from './components/Qor8Logo';
+import { EcosystemHero } from './components/EcosystemHero';
 import './App.css';
 
 // SVG Icons for the 9 Qor8 apps
@@ -532,6 +533,9 @@ export default function App() {
             </div>
           </div>
         </section>
+
+        {/* Ecosystem hero ported from main — orbit animation stage */}
+        <EcosystemHero />
 
         {/* 3. Nine Enterprise Applications / One Connected Ecosystem */}
         <section className="ecosystem-section">
