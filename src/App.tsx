@@ -60,6 +60,59 @@ const APP_ICONS = {
   ),
 };
 
+const NAV_ITEMS = [
+  { label: 'Products', dropdown: true },
+  { label: 'Solutions', dropdown: true },
+  { label: 'Resources', dropdown: true },
+  { label: 'Company', dropdown: true },
+  { label: 'Pricing', href: '#pricing' },
+];
+
+const FOOTER_LINK_COLUMNS = [
+  {
+    title: 'Products',
+    links: [
+      { label: 'Qor8 Link', href: '#link' },
+      { label: 'Qor8 Time', href: '#time' },
+      { label: 'Qor8 HR', href: '#hr' },
+      { label: 'Qor8 Prop', href: '#prop' },
+      { label: 'Qor8 Fix', href: '#fix' },
+      { label: 'Qor8 Verify', href: '#verify' },
+      { label: 'Qor8 Mind', href: '#mind' },
+      { label: 'Qor8 Care', href: '#care' },
+      { label: 'Qor8 Buy', href: '#buy' },
+    ],
+  },
+  {
+    title: 'Solutions',
+    links: [
+      { label: 'Care & Support', href: '#care-support' },
+      { label: 'Property Management', href: '#property' },
+      { label: 'Workforce Management', href: '#workforce' },
+      { label: 'Compliance', href: '#compliance' },
+      { label: 'Operations', href: '#operations' },
+    ],
+  },
+  {
+    title: 'Company',
+    links: [
+      { label: 'About us', href: '#about' },
+      { label: 'Careers', href: '#careers' },
+      { label: 'Partners', href: '#partners' },
+      { label: 'News & Insights', href: '#news' },
+    ],
+  },
+  {
+    title: 'Resources',
+    links: [
+      { label: 'Help Centre', href: '#help-centre' },
+      { label: 'Blog', href: '#blog' },
+      { label: 'Case Studies', href: '#case-studies' },
+      { label: 'Documentation', href: '#docs' },
+    ],
+  },
+];
+
 const APPS_LIST = [
   { id: 'link', name: 'Qor8 Link', label: 'Communications', color: 'var(--color-app-link)', icon: APP_ICONS.link },
   { id: 'time', name: 'Qor8 Time', label: 'Time & Attendance', color: 'var(--color-app-time)', icon: APP_ICONS.time },
@@ -73,31 +126,31 @@ const APPS_LIST = [
 ];
 
 export default function App() {
+  const [navOpen, setNavOpen] = React.useState(false);
+
+  const renderNavItems = () =>
+    NAV_ITEMS.map((item) =>
+      item.href ? (
+        <a key={item.label} href={item.href} className="nav-link" onClick={() => setNavOpen(false)}>
+          {item.label}
+        </a>
+      ) : (
+        <div key={item.label} className="nav-item">
+          <span>{item.label}</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="nav-arrow"><polyline points="6 9 12 15 18 9" /></svg>
+        </div>
+      )
+    );
+
   return (
     <div className="app-page">
       {/* 1. Header Navigation */}
       <header className="app-header">
         <div className="header-content">
           <Qor8Logo size={34} />
-          
+
           <nav className="header-nav" aria-label="Main Navigation">
-            <div className="nav-item">
-              <span>Products</span>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="nav-arrow"><polyline points="6 9 12 15 18 9" /></svg>
-            </div>
-            <div className="nav-item">
-              <span>Solutions</span>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="nav-arrow"><polyline points="6 9 12 15 18 9" /></svg>
-            </div>
-            <div className="nav-item">
-              <span>Resources</span>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="nav-arrow"><polyline points="6 9 12 15 18 9" /></svg>
-            </div>
-            <div className="nav-item">
-              <span>Company</span>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="nav-arrow"><polyline points="6 9 12 15 18 9" /></svg>
-            </div>
-            <a href="#pricing" className="nav-link">Pricing</a>
+            {renderNavItems()}
           </nav>
 
           <div className="header-right">
@@ -116,8 +169,24 @@ export default function App() {
               Request a demo
               <span className="demo-arrow">&rarr;</span>
             </button>
+            <button
+              className="mobile-menu-button"
+              aria-label={navOpen ? 'Close menu' : 'Open menu'}
+              aria-expanded={navOpen}
+              onClick={() => setNavOpen((open) => !open)}
+            >
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
+                {navOpen ? <path d="M18 6 6 18M6 6l12 12" /> : <path d="M3 6h18M3 12h18M3 18h18" />}
+              </svg>
+            </button>
           </div>
         </div>
+
+        {navOpen && (
+          <nav className="mobile-nav-drawer" aria-label="Mobile Navigation">
+            {renderNavItems()}
+          </nav>
+        )}
       </header>
 
       {/* Main Content Sections */}
@@ -191,7 +260,8 @@ export default function App() {
 
             {/* Right Hero Interactive Mockups */}
             <div className="hero-right">
-              
+              <div className="hero-mockup-group">
+
               {/* Desktop Browser Mockup */}
               <div className="desktop-mockup">
                 <div className="mockup-header-bar">
@@ -458,6 +528,7 @@ export default function App() {
                 </div>
               </div>
 
+              </div>
             </div>
           </div>
         </section>
@@ -757,51 +828,16 @@ export default function App() {
             </div>
 
             {/* Links Columns */}
-            <div className="footer-links-col">
-              <h4>Products</h4>
-              <ul>
-                <li><a href="#link">Qor8 Link</a></li>
-                <li><a href="#time">Qor8 Time</a></li>
-                <li><a href="#hr">Qor8 HR</a></li>
-                <li><a href="#prop">Qor8 Prop</a></li>
-                <li><a href="#fix">Qor8 Fix</a></li>
-                <li><a href="#verify">Qor8 Verify</a></li>
-                <li><a href="#mind">Qor8 Mind</a></li>
-                <li><a href="#care">Qor8 Care</a></li>
-                <li><a href="#buy">Qor8 Buy</a></li>
-              </ul>
-            </div>
-
-            <div className="footer-links-col">
-              <h4>Solutions</h4>
-              <ul>
-                <li><a href="#care-support">Care & Support</a></li>
-                <li><a href="#property">Property Management</a></li>
-                <li><a href="#workforce">Workforce Management</a></li>
-                <li><a href="#compliance">Compliance</a></li>
-                <li><a href="#operations">Operations</a></li>
-              </ul>
-            </div>
-
-            <div className="footer-links-col">
-              <h4>Company</h4>
-              <ul>
-                <li><a href="#about">About us</a></li>
-                <li><a href="#careers">Careers</a></li>
-                <li><a href="#partners">Partners</a></li>
-                <li><a href="#news">News & Insights</a></li>
-              </ul>
-            </div>
-
-            <div className="footer-links-col">
-              <h4>Resources</h4>
-              <ul>
-                <li><a href="#help-centre">Help Centre</a></li>
-                <li><a href="#blog">Blog</a></li>
-                <li><a href="#case-studies">Case Studies</a></li>
-                <li><a href="#docs">Documentation</a></li>
-              </ul>
-            </div>
+            {FOOTER_LINK_COLUMNS.map((col) => (
+              <div className="footer-links-col" key={col.title}>
+                <h4>{col.title}</h4>
+                <ul>
+                  {col.links.map((link) => (
+                    <li key={link.label}><a href={link.href}>{link.label}</a></li>
+                  ))}
+                </ul>
+              </div>
+            ))}
 
             {/* Ready to Get Started Column */}
             <div className="footer-promo-col">
