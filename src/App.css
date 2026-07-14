@@ -1964,14 +1964,6 @@
   .signin-link {
     display: none;
   }
-  /* Mobile: lift the apps section up to sit right after the hero,
-     ahead of the value-props and orbit sections. */
-  .hero-section {
-    order: -2;
-  }
-  .ecosystem-section {
-    order: -1;
-  }
   .apps-grid {
     grid-template-columns: repeat(3, 1fr);
   }

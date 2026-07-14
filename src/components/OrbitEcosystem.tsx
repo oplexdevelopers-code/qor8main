@@ -83,14 +83,14 @@ export const OrbitEcosystem: React.FC<OrbitEcosystemProps> = ({
 }) => {
   const nodes: OrbitNode[] = [
     // Same order as the "Eight enterprise applications" grid in App.tsx
-    { name: 'Qor8 Link', accentRgb: '0, 85, 255', icon: ICONS.link },
-    { name: 'Qor8 Time', accentRgb: '0, 85, 255', icon: ICONS.time },
-    { name: 'Qor8 HR', accentRgb: '124, 58, 237', icon: ICONS.hr },
-    { name: 'Qor8 Prop', accentRgb: '22, 163, 74', icon: ICONS.prop },
-    { name: 'Qor8 Fix', accentRgb: '234, 88, 12', icon: ICONS.fix },
-    { name: 'Qor8 Mind', accentRgb: '124, 58, 237', icon: ICONS.mind },
-    { name: 'Qor8 Care', accentRgb: '22, 163, 74', icon: ICONS.care },
-    { name: 'Qor8 Buy', accentRgb: '99, 102, 241', icon: ICONS.buy },
+    { name: 'QorLink', accentRgb: '0, 85, 255', icon: ICONS.link },
+    { name: 'QorTime', accentRgb: '0, 85, 255', icon: ICONS.time },
+    { name: 'QorHR', accentRgb: '124, 58, 237', icon: ICONS.hr },
+    { name: 'QorProp', accentRgb: '22, 163, 74', icon: ICONS.prop },
+    { name: 'QorFix', accentRgb: '234, 88, 12', icon: ICONS.fix },
+    { name: 'QorMind', accentRgb: '124, 58, 237', icon: ICONS.mind },
+    { name: 'QorCare', accentRgb: '22, 163, 74', icon: ICONS.care },
+    { name: 'QorBuy', accentRgb: '99, 102, 241', icon: ICONS.buy },
   ];
 
   return (
