@@ -185,7 +185,7 @@
 .hero-section {
   position: relative;
   background-color: #ffffff;
-  padding: var(--spacing-8) var(--spacing-5) var(--spacing-9);
+  padding: var(--spacing-9) var(--spacing-5);
   overflow: hidden;
   width: 100%;
 }
@@ -1126,7 +1126,7 @@
    3. Eight Enterprise Applications Section with Horizontal Timeline
    ========================================================================== */
 .ecosystem-section {
-  padding: var(--spacing-9) var(--spacing-5) var(--spacing-8);
+  padding: var(--spacing-9) var(--spacing-5);
   background-color: #ffffff;
   width: 100%;
 }
@@ -1530,7 +1530,7 @@
    4. Built to Deliver Outcomes That Matter
    ========================================================================== */
 .outcomes-section {
-  padding: var(--spacing-10) var(--spacing-5) var(--spacing-9);
+  padding: var(--spacing-9) var(--spacing-5);
   background-color: #ffffff;
   width: 100%;
 }
@@ -1656,7 +1656,7 @@
    ========================================================================== */
 .trust-stats-section {
   background-color: #ffffff;
-  padding: var(--spacing-5) var(--spacing-5);
+  padding: var(--spacing-9) var(--spacing-5);
   width: 100%;
 }
 
@@ -1672,8 +1672,14 @@
 .trust-stat-col {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 12px;
   flex: 1;
+  background-color: #ffffff;
+  border: 1px solid rgba(15, 23, 42, 0.06);
+  border-radius: 14px;
+  padding: var(--spacing-4);
+  box-shadow: var(--shadow-sm);
 }
 
 .trust-stat-icon {
@@ -1986,16 +1992,41 @@
   }
   .trust-stats-container {
     flex-direction: column;
-    align-items: flex-start;
+    align-items: stretch;
     gap: 16px;
   }
   .footer-top-grid {
     grid-template-columns: repeat(2, 1fr);
   }
+  /* Centre all footer content on mobile */
+  .app-footer {
+    text-align: center;
+  }
+  .footer-brand-col {
+    align-items: center;
+  }
+  .footer-socials {
+    justify-content: center;
+  }
+  /* …except the menu links: keep them flush-left so they line up */
+  .footer-links-col {
+    text-align: left;
+  }
+  /* Centre the promo box itself */
+  .footer-promo-col {
+    justify-content: center;
+  }
+  .promo-box {
+    max-width: 320px;
+    width: 100%;
+  }
   .footer-bottom-row {
     flex-direction: column;
-    align-items: flex-start;
+    align-items: center;
     gap: 12px;
+  }
+  .footer-legal-links {
+    justify-content: center;
   }
 }
 
@@ -2003,8 +2034,13 @@
   .apps-grid {
     grid-template-columns: repeat(2, 1fr);
   }
+  /* Footer menu stays two-up; brand and promo take the full row */
   .footer-top-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .footer-brand-col,
+  .footer-promo-col {
+    grid-column: 1 / -1;
   }
   .hero-right {
     align-items: flex-start;
