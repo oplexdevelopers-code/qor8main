@@ -28,7 +28,7 @@ export function EcosystemHero() {
         </h3>
         <p className="eco-hero-paragraph">
           Every Qor8 application is complete on its own. Deploy Qor8 HR or
-          Qor8 Prop first, then add messaging, purchasing or verification
+          Qor8 Prop first, then add messaging, purchasing or maintenance
           when your team is ready — new applications discover each other
           and connect automatically, with no rework and no data migration.
         </p>

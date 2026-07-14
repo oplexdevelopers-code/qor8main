@@ -3,12 +3,11 @@ import { Qor8Logo } from './components/Qor8Logo';
 import { EcosystemHero } from './components/EcosystemHero';
 import './App.css';
 
-// SVG Icons for the 9 Qor8 apps
+// SVG Icons for the 8 Qor8 apps
 const APP_ICONS = {
   link: (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
       <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
-      <path d="M8 10h8M8 14h6" />
     </svg>
   ),
   time: (
@@ -27,19 +26,15 @@ const APP_ICONS = {
   ),
   prop: (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-      <rect x="3" y="3" width="18" height="18" rx="2" />
-      <path d="M9 3v18M15 3v18M3 9h18M3 15h18" />
+      <rect x="2" y="2" width="20" height="20" rx="2" ry="2" />
+      <path d="M7 2v20" />
+      <path d="M17 2v20" />
+      <path d="M2 12h20" />
     </svg>
   ),
   fix: (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
       <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z" />
-    </svg>
-  ),
-  verify: (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-      <path d="m9 11 2 2 4-4" />
     </svg>
   ),
   mind: (
@@ -49,7 +44,7 @@ const APP_ICONS = {
   ),
   care: (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
+      <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
     </svg>
   ),
   buy: (
@@ -78,7 +73,6 @@ const FOOTER_LINK_COLUMNS = [
       { label: 'Qor8 HR', href: '#hr' },
       { label: 'Qor8 Prop', href: '#prop' },
       { label: 'Qor8 Fix', href: '#fix' },
-      { label: 'Qor8 Verify', href: '#verify' },
       { label: 'Qor8 Mind', href: '#mind' },
       { label: 'Qor8 Care', href: '#care' },
       { label: 'Qor8 Buy', href: '#buy' },
@@ -115,19 +109,44 @@ const FOOTER_LINK_COLUMNS = [
 ];
 
 const APPS_LIST = [
-  { id: 'link', name: 'Qor8 Link', label: 'Communications', color: 'var(--color-app-link)', icon: APP_ICONS.link },
-  { id: 'time', name: 'Qor8 Time', label: 'Time & Attendance', color: 'var(--color-app-time)', icon: APP_ICONS.time },
-  { id: 'hr', name: 'Qor8 HR', label: 'Workforce', color: 'var(--color-app-hr)', icon: APP_ICONS.hr },
-  { id: 'prop', name: 'Qor8 Prop', label: 'Property & Assets', color: 'var(--color-app-prop)', icon: APP_ICONS.prop },
-  { id: 'fix', name: 'Qor8 Fix', label: 'Maintenance', color: 'var(--color-app-fix)', icon: APP_ICONS.fix },
-  { id: 'verify', name: 'Qor8 Verify', label: 'Identity', color: 'var(--color-app-verify)', icon: APP_ICONS.verify },
-  { id: 'mind', name: 'Qor8 Mind', label: 'Wellbeing', color: 'var(--color-app-mind)', icon: APP_ICONS.mind },
-  { id: 'care', name: 'Qor8 Care', label: 'Care & Support', color: 'var(--color-app-care)', icon: APP_ICONS.care },
-  { id: 'buy', name: 'Qor8 Buy', label: 'Procurement', color: 'var(--color-app-buy)', icon: APP_ICONS.buy },
+  {
+    id: 'link', name: 'Qor8 Link', label: 'Communications', color: 'var(--color-app-link)', icon: APP_ICONS.link,
+    specs: ['Secure team messaging & channels', 'Broadcast announcements to any group', 'Read receipts & audit trail', 'Dedicated iOS & Android app', 'Full Command Centre control'],
+  },
+  {
+    id: 'time', name: 'Qor8 Time', label: 'Time & Attendance', color: 'var(--color-app-time)', icon: APP_ICONS.time,
+    specs: ['GPS & geofenced clock in/out', 'Rota planning & shift swaps', 'Overtime & absence tracking', 'Dedicated iOS & Android app', 'Full Command Centre control'],
+  },
+  {
+    id: 'hr', name: 'Qor8 HR', label: 'Workforce', color: 'var(--color-app-hr)', icon: APP_ICONS.hr,
+    specs: ['Employee records & onboarding', 'Training & certification tracking', 'Leave management & approvals', 'Dedicated iOS & Android app', 'Full Command Centre control'],
+  },
+  {
+    id: 'prop', name: 'Qor8 Prop', label: 'Property & Assets', color: 'var(--color-app-prop)', icon: APP_ICONS.prop,
+    specs: ['Site, unit & asset registers', 'Inspections & compliance checks', 'Document & certificate storage', 'Dedicated iOS & Android app', 'Full Command Centre control'],
+  },
+  {
+    id: 'fix', name: 'Qor8 Fix', label: 'Maintenance', color: 'var(--color-app-fix)', icon: APP_ICONS.fix,
+    specs: ['Reactive & planned maintenance', 'Job assignment with photo evidence', 'Contractor management & SLAs', 'Dedicated iOS & Android app', 'Full Command Centre control'],
+  },
+  {
+    id: 'mind', name: 'Qor8 Mind', label: 'Wellbeing', color: 'var(--color-app-mind)', icon: APP_ICONS.mind,
+    specs: ['Confidential wellbeing check-ins', 'Team pulse surveys & insights', 'Signposting to support resources', 'Dedicated iOS & Android app', 'Full Command Centre control'],
+  },
+  {
+    id: 'care', name: 'Qor8 Care', label: 'Care & Support', color: 'var(--color-app-care)', icon: APP_ICONS.care,
+    specs: ['Care plans & daily notes', 'Medication administration records', 'Incident reporting & alerts', 'Dedicated iOS & Android app', 'Full Command Centre control'],
+  },
+  {
+    id: 'buy', name: 'Qor8 Buy', label: 'Procurement', color: 'var(--color-app-buy)', icon: APP_ICONS.buy,
+    specs: ['Purchase requests & approvals', 'Supplier catalogues & ordering', 'Budget tracking & spend reports', 'Dedicated iOS & Android app', 'Full Command Centre control'],
+  },
 ];
 
 export default function App() {
   const [navOpen, setNavOpen] = React.useState(false);
+  const [selectedApp, setSelectedApp] = React.useState<string | null>(null);
+  const activeApp = APPS_LIST.find((app) => app.id === selectedApp);
 
   const renderNavItems = () =>
     NAV_ITEMS.map((item) =>
@@ -534,43 +553,120 @@ export default function App() {
           </div>
         </section>
 
+        {/* 2b. Value propositions — straight after hero & dashboard preview */}
+        <section className="value-props-section">
+          <div className="value-prop">
+            <h2 className="section-title">Everything you need. Ready from day one.</h2>
+            <div className="value-cards">
+              <div className="value-card">
+                <div className="value-card-icon icon-blue">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><rect x="5" y="2" width="14" height="20" rx="2" ry="2" /><path d="M12 18h.01" /></svg>
+                </div>
+                <h3>Dedicated mobile app</h3>
+                <p>Every Qor8 product ships with its own iOS &amp; Android app, so your teams can work anywhere.</p>
+              </div>
+              <div className="value-card">
+                <div className="value-card-icon icon-purple">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" /><path d="M9 3v18M21 9H9" /></svg>
+                </div>
+                <h3>Powerful Command Centre</h3>
+                <p>Complete oversight and control of your organisation from one secure dashboard.</p>
+              </div>
+              <div className="value-card">
+                <div className="value-card-icon icon-green">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18" /><polyline points="17 6 23 6 23 12" /></svg>
+                </div>
+                <h3>Built to grow with you</h3>
+                <p>Start with one product, then build your complete Qor8 ecosystem as your organisation grows.</p>
+              </div>
+            </div>
+          </div>
+
+          <div className="value-prop">
+            <h2 className="section-title">People First. Technology Second.</h2>
+            <p className="value-prop-text">
+              We don&rsquo;t build software and then look for customers.
+            </p>
+            <div className="value-steps">
+              <div className="value-step">
+                <span className="value-step-num">1</span>
+                <h3>Listen</h3>
+                <p>We start by listening to organisations and how they really work.</p>
+              </div>
+              <div className="value-step-arrow" aria-hidden="true">&rarr;</div>
+              <div className="value-step">
+                <span className="value-step-num">2</span>
+                <h3>Understand</h3>
+                <p>We dig into the challenges your people face every day.</p>
+              </div>
+              <div className="value-step-arrow" aria-hidden="true">&rarr;</div>
+              <div className="value-step">
+                <span className="value-step-num">3</span>
+                <h3>Build</h3>
+                <p>Only then do we create technology that helps people work smarter, move faster and focus on what they do best&mdash;with complete confidence.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* Ecosystem hero ported from main — orbit animation stage */}
         <EcosystemHero />
 
-        {/* 3. Nine Enterprise Applications / One Connected Ecosystem */}
+        {/* 3. Eight Enterprise Applications / One Connected Ecosystem */}
         <section className="ecosystem-section">
           <div className="ecosystem-container">
             <h2 className="section-title">
-              Nine enterprise applications. One connected ecosystem.
+              Eight enterprise applications. One connected ecosystem.
             </h2>
-            
-            {/* Apps Grid */}
+
+            {/* Apps Grid — each card is a product button; click for spec list */}
             <div className="apps-grid">
               {APPS_LIST.map((app) => (
-                <div key={app.id} className="app-card" style={{ '--accent-color': app.color } as React.CSSProperties}>
+                <button
+                  key={app.id}
+                  type="button"
+                  className={`app-card ${selectedApp === app.id ? 'selected' : ''}`}
+                  style={{ '--accent-color': app.color } as React.CSSProperties}
+                  onClick={() => setSelectedApp(selectedApp === app.id ? null : app.id)}
+                  aria-expanded={selectedApp === app.id}
+                >
                   <div className="app-card-icon-container">
                     {app.icon}
                   </div>
                   <h3 className="app-card-title">{app.name}</h3>
                   <p className="app-card-subtitle">{app.label}</p>
-                </div>
+                </button>
               ))}
             </div>
+
+            {/* Spec panel for the selected product */}
+            {activeApp && (
+              <div className="app-spec-panel" style={{ '--accent-color': activeApp.color } as React.CSSProperties}>
+                <div className="app-spec-header">
+                  <div className="app-card-icon-container">{activeApp.icon}</div>
+                  <div>
+                    <h3 className="app-spec-title">{activeApp.name}</h3>
+                    <p className="app-spec-label">{activeApp.label}</p>
+                  </div>
+                </div>
+                <ul className="app-spec-list">
+                  {activeApp.specs.map((spec) => (
+                    <li key={spec}>{spec}</li>
+                  ))}
+                </ul>
+                <button className="subscribe-btn" type="button">
+                  Subscribe now
+                  <span style={{ marginLeft: '8px' }}>&rarr;</span>
+                </button>
+              </div>
+            )}
 
             {/* Connecting Mesh Lines and Timeline Grid */}
             <div className="timeline-connector-section">
               <div className="timeline-line">
-                <div className="timeline-dot"></div>
-                <div className="timeline-dot"></div>
-                <div className="timeline-dot"></div>
-                <div className="timeline-dot"></div>
-                <div className="timeline-dot-center">
-                  <div className="timeline-dot active-dot"></div>
-                </div>
-                <div className="timeline-dot"></div>
-                <div className="timeline-dot"></div>
-                <div className="timeline-dot"></div>
-                <div className="timeline-dot"></div>
+                {APPS_LIST.map((app) => (
+                  <div key={app.id} className="timeline-dot"></div>
+                ))}
               </div>
 
               <div className="connection-mesh-container">
@@ -581,16 +677,19 @@ export default function App() {
                       <stop offset="100%" stopColor="rgba(37, 99, 235, 0.5)" />
                     </linearGradient>
                   </defs>
-                  {/* Lines starting from the corresponding dot X coords down to the center badge */}
-                  <path d="M 55 0 Q 55 70 500 110" stroke="url(#lineGrad)" strokeWidth="1.5" strokeDasharray="3 3" />
-                  <path d="M 166 0 Q 166 80 500 110" stroke="url(#lineGrad)" strokeWidth="1.5" />
-                  <path d="M 277 0 Q 277 90 500 110" stroke="url(#lineGrad)" strokeWidth="1.5" strokeDasharray="2 2" />
-                  <path d="M 388 0 Q 388 100 500 110" stroke="url(#lineGrad)" strokeWidth="1.5" />
-                  <path d="M 500 0 L 500 110" stroke="url(#lineGrad)" strokeWidth="1.5" />
-                  <path d="M 611 0 Q 611 100 500 110" stroke="url(#lineGrad)" strokeWidth="1.5" />
-                  <path d="M 722 0 Q 722 90 500 110" stroke="url(#lineGrad)" strokeWidth="1.5" strokeDasharray="2 2" />
-                  <path d="M 833 0 Q 833 80 500 110" stroke="url(#lineGrad)" strokeWidth="1.5" />
-                  <path d="M 944 0 Q 944 70 500 110" stroke="url(#lineGrad)" strokeWidth="1.5" strokeDasharray="3 3" />
+                  {/* One line per app, from its dot X coord down to the center badge */}
+                  {APPS_LIST.map((app, i) => {
+                    const x = 62.5 + 125 * i; // 8 evenly spaced columns over viewBox width 1000
+                    return (
+                      <path
+                        key={app.id}
+                        d={`M ${x} 0 Q ${x} ${70 + Math.min(i, 7 - i) * 10} 500 110`}
+                        stroke="url(#lineGrad)"
+                        strokeWidth="1.5"
+                        strokeDasharray={i % 2 === 0 ? '3 3' : undefined}
+                      />
+                    );
+                  })}
                 </svg>
                 
                 {/* Central Glowing Core Symbol badge */}

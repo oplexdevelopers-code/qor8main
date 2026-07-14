@@ -9,8 +9,6 @@
   align-items: center;
   justify-content: center;
   margin: 0 auto;
-  animation: orbit-entry-spin 1.2s var(--transition-fluid) forwards;
-  will-change: transform, opacity;
 }
 
 /* Background Rainbow Wave Gradient (Aurora style) */
@@ -157,24 +155,25 @@
   animation-iteration-count: infinite;
 }
 
-/* Path runs bottom-left (0%) to top-right (100%). Each icon only actively
-   falls (100% -> 0%, top to bottom) during the first 40% of its own cycle,
-   then sits parked+hidden for the remaining 60% before its next lap — with
-   8 icons staggered evenly across the loop, that keeps only ~3-4 in flight
-   at any moment, and because each one crosses the *entire* rail during its
-   active window, the ones on screen land at well-spread-out positions
-   instead of clumping in one spot. */
+/* Path runs bottom-left (0%) to top-right (100%). Each icon crosses the
+   whole rail at constant (linear) speed during the first 70% of its cycle,
+   then rests off-rail for the remaining 30% — with the even stagger that
+   keeps ~5-6 icons on the rail at once, equally spaced, conveyor-style.
+   Spacing knob: lower the 70% active window for wider gaps (fewer icons
+   on the rail), raise it for tighter ones. Keep rail-fade's ramps at the
+   same window edges. No ease-in — only a brief edge fade matching the
+   rail's own end-fade mask, so icons don't pop in/out at the path ends. */
 @keyframes rail-travel {
   0% { offset-distance: 100%; }
-  40% { offset-distance: 0%; }
-  40.01%, 100% { offset-distance: 100%; }
+  45% { offset-distance: 0%; }
+  45.01%, 100% { offset-distance: 100%; }
 }
 
 @keyframes rail-fade {
   0% { opacity: 0; }
-  3% { opacity: 1; }
-  37% { opacity: 1; }
-  40%, 100% { opacity: 0; }
+  4% { opacity: 1; }
+  41% { opacity: 1; }
+  45%, 100% { opacity: 0; }
 }
 
 /* Tight grounding shadow right beneath the icon, where it overlaps the
@@ -268,18 +267,6 @@
   opacity: 1;
   color: #060f25;
   font-weight: 800;
-}
-
-/* Entry Spin animation triggered on tab updates */
-@keyframes orbit-entry-spin {
-  0% {
-    transform: scale(0.85) rotate(-35deg);
-    opacity: 0;
-  }
-  100% {
-    transform: scale(1) rotate(0deg);
-    opacity: 1;
-  }
 }
 
 /* Shrink the 440px reference stage to match the smaller orbit-container at
