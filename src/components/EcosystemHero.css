@@ -7,16 +7,12 @@
   position: relative;
   width: 100%;
   overflow: hidden;
-  /* Soft blue wash separates this band from the white hero above it. */
-  background:
-    radial-gradient(ellipse 70% 90% at 78% 40%, rgba(37, 99, 235, 0.06), transparent 70%),
-    linear-gradient(180deg, #f7f9fd 0%, #ffffff 100%);
-  border-top: 1px solid rgba(15, 23, 42, 0.05);
+  background-color: #ffffff;
 }
 
 .eco-hero-inner {
   position: relative;
-  max-width: 1200px;
+  max-width: min(1600px, 94vw);
   margin: 0 auto;
   padding: var(--spacing-8) var(--spacing-5) var(--spacing-9);
   display: grid;
@@ -24,20 +20,6 @@
   gap: var(--spacing-6);
   align-items: center;
   width: 100%;
-}
-
-/* Dot-grid backdrop concentrated toward the bottom-right so the section
-   doesn't end on plain white. */
-.eco-hero-section::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  background-image: radial-gradient(rgba(15, 23, 42, 0.06) 1px, transparent 1.5px);
-  background-size: 24px 24px;
-  mask-image: radial-gradient(ellipse 90% 80% at 68% 92%, #000 35%, transparent 100%);
-  -webkit-mask-image: radial-gradient(ellipse 90% 80% at 68% 92%, #000 35%, transparent 100%);
-  pointer-events: none;
 }
 
 .eco-hero-left,
