@@ -29,12 +29,6 @@ const ICONS = {
       <path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96-.44 2.5 2.5 0 0 1 0-4.12 2.5 2.5 0 0 1 0-4.88A2.5 2.5 0 0 1 9.5 2zM14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96-.44 2.5 2.5 0 0 0 0-4.12 2.5 2.5 0 0 0 0-4.88A2.5 2.5 0 0 0 14.5 2z" />
     </svg>
   ),
-  verify: (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-      <path d="m9 11 2 2 4-4" />
-    </svg>
-  ),
   fix: (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
       <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z" />
@@ -49,6 +43,13 @@ const ICONS = {
   link: (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
       <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+    </svg>
+  ),
+  buy: (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+      <circle cx="9" cy="21" r="1" />
+      <circle cx="20" cy="21" r="1" />
+      <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
     </svg>
   ),
 };
@@ -70,12 +71,10 @@ interface OrbitEcosystemProps {
   activeTabId?: string;
 }
 
-// Full traverse duration for one icon's trip along the rail; stagger delays
-// below are spaced evenly across this so icons continuously enter, cross,
-// and exit — like a ticker/headlines strip — rather than all bunching up.
-// Each icon is only actively crossing the rail for the first 40% of this
-// duration (see rail-travel/rail-fade in OrbitEcosystem.css), so the real
-// crossing time is ~40% of it — 18s keeps that a relaxed ~7s glide.
+// Full traverse duration for one icon's trip along the rail. Icons move at
+// constant linear speed for the whole cycle, with stagger delays spaced
+// evenly across it — so all of them are always on the rail, equally spaced,
+// like a conveyor. Lower = faster glide.
 const TRAVEL_DURATION = 18;
 
 export const OrbitEcosystem: React.FC<OrbitEcosystemProps> = ({
@@ -83,14 +82,15 @@ export const OrbitEcosystem: React.FC<OrbitEcosystemProps> = ({
   activeTabId = 'all',
 }) => {
   const nodes: OrbitNode[] = [
-    { name: 'Qor8 Link', accentRgb: '0, 85, 255', icon: ICONS.link },
-    { name: 'Qor8 Time', accentRgb: '0, 85, 255', icon: ICONS.time },
-    { name: 'Qor8 HR', accentRgb: '124, 58, 237', icon: ICONS.hr },
-    { name: 'Qor8 Fix', accentRgb: '234, 88, 12', icon: ICONS.fix },
-    { name: 'Qor8 Verify', accentRgb: '13, 148, 136', icon: ICONS.verify },
-    { name: 'Qor8 Mind', accentRgb: '124, 58, 237', icon: ICONS.mind },
-    { name: 'Qor8 Prop', accentRgb: '22, 163, 74', icon: ICONS.prop },
-    { name: 'Qor8 Care', accentRgb: '22, 163, 74', icon: ICONS.care },
+    // Same order as the "Eight enterprise applications" grid in App.tsx
+    { name: 'QorLink', accentRgb: '0, 85, 255', icon: ICONS.link },
+    { name: 'QorTime', accentRgb: '0, 85, 255', icon: ICONS.time },
+    { name: 'QorHR', accentRgb: '124, 58, 237', icon: ICONS.hr },
+    { name: 'QorProp', accentRgb: '22, 163, 74', icon: ICONS.prop },
+    { name: 'QorFix', accentRgb: '234, 88, 12', icon: ICONS.fix },
+    { name: 'QorMind', accentRgb: '124, 58, 237', icon: ICONS.mind },
+    { name: 'QorCare', accentRgb: '22, 163, 74', icon: ICONS.care },
+    { name: 'QorBuy', accentRgb: '99, 102, 241', icon: ICONS.buy },
   ];
 
   return (

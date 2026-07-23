@@ -1,0 +1,190 @@
+/* ==========================================================================
+   EcosystemHero — hero section ported from main, scoped with `eco-hero-`
+   prefix so it can coexist with the primary hero's .hero-* styles.
+   ========================================================================== */
+
+.eco-hero-section {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  background-color: #ffffff;
+}
+
+.eco-hero-inner {
+  position: relative;
+  max-width: min(1600px, 94vw);
+  margin: 0 auto;
+  padding: var(--spacing-9) var(--spacing-5);
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap: var(--spacing-6);
+  align-items: center;
+  width: 100%;
+}
+
+.eco-hero-left,
+.eco-hero-right {
+  position: relative;
+  z-index: 1;
+}
+
+.eco-hero-left {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  z-index: 2;
+}
+
+.eco-hero-badge {
+  border: 1.5px solid rgba(0, 85, 255, 0.15);
+  color: var(--color-brand-blue);
+  text-transform: uppercase;
+  font-weight: 800;
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  padding: 5px 12px;
+  border-radius: 20px;
+  margin-bottom: var(--spacing-4);
+  background-color: rgba(0, 85, 255, 0.02);
+}
+
+.eco-hero-headline {
+  font-size: clamp(30px, 3.1vw, 40px);
+  font-weight: 900;
+  line-height: 1.15;
+  letter-spacing: var(--letter-spacing-tight);
+  color: #060f25;
+  margin-bottom: var(--spacing-3);
+}
+
+.eco-hero-subtitle {
+  font-size: clamp(17px, 1.8vw, 21px);
+  font-weight: 800;
+  margin-bottom: var(--spacing-4);
+}
+
+.eco-hero-paragraph {
+  color: var(--color-fg-muted);
+  font-size: 16px;
+  line-height: 1.6;
+  max-width: 480px;
+  margin-bottom: var(--spacing-5);
+}
+
+.eco-hero-ctas {
+  display: flex;
+  gap: var(--spacing-4);
+  flex-wrap: wrap;
+}
+
+.eco-hero-primary-cta {
+  background-color: var(--color-brand-blue);
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 22px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  transition: transform var(--transition-duration-fast) var(--transition-fluid),
+    background-color var(--transition-duration-fast);
+}
+
+.eco-hero-primary-cta:hover {
+  transform: translateY(-1px);
+  background-color: #0044cc;
+}
+
+.eco-hero-secondary-cta {
+  background-color: #ffffff;
+  color: var(--color-brand-blue);
+  border: 1.5px solid rgba(0, 85, 255, 0.15);
+  border-radius: 8px;
+  padding: 12px 22px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+  transition: transform var(--transition-duration-fast) var(--transition-fluid),
+    border-color var(--transition-duration-fast),
+    background-color var(--transition-duration-fast);
+}
+
+.eco-hero-secondary-cta:hover {
+  transform: translateY(-1px);
+  border-color: rgba(0, 85, 255, 0.35);
+  background-color: rgba(0, 85, 255, 0.02);
+}
+
+.eco-hero-right {
+  position: relative;
+  width: 440px;
+  height: 440px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
+}
+
+@media (max-width: 992px) {
+  .eco-hero-inner {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-9);
+    text-align: center;
+    padding-top: var(--spacing-6);
+  }
+
+  .eco-hero-left {
+    align-items: center;
+  }
+
+  .eco-hero-paragraph {
+    max-width: 550px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .eco-hero-ctas {
+    justify-content: center;
+    margin-bottom: var(--spacing-5);
+  }
+}
+
+@media (max-width: 768px) {
+  .eco-hero-right {
+    width: 320px;
+    height: 320px;
+  }
+}
+
+@media (max-width: 576px) {
+  .eco-hero-headline {
+    font-size: 32px;
+  }
+
+  .eco-hero-subtitle {
+    font-size: 16px;
+    line-height: 1.4;
+  }
+
+  .eco-hero-paragraph {
+    font-size: 14px;
+  }
+
+  .eco-hero-ctas {
+    flex-direction: column;
+    width: 100%;
+    align-items: stretch;
+    gap: var(--spacing-3);
+  }
+
+  .eco-hero-primary-cta,
+  .eco-hero-secondary-cta {
+    width: 100%;
+    justify-content: center;
+  }
+}
